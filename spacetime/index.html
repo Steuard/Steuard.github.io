@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Interactive Two-Observer Spacetime Diagrams</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="Author" content="Steuard Jensen" />
+    <script type="module" crossorigin src="./assets/main-0nPqEc6k.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/System-BOI9hxz9.js">
+    <link rel="stylesheet" crossorigin href="./assets/System-CHx0tuS1.css">
+  </head>
+
+  <body>
+    <header>
+      <h1>Interactive Two-Observer Spacetime&nbsp;Diagrams</h1>
+      <div class="notes">
+        <p>by Steuard Jensen, Alma College.</p>
+        <p><a href="intro.html">What is this?</a></p> 
+        <p><a href="#HowToUse">Instructions</a></p>
+      </div>
+
+      <noscript>
+        <div style="color: red; margin: 2rem;">
+          It looks like you've got Javascript turned off. (Good for you: I browse that
+          way, too.) You'll need to enable it to use this app.
+        </div>
+      </noscript>
+      <div class="hidden warning" id="unsupportedWarning">
+        My apologies. You're using an older browser, and I've been lazy and written this
+        app just using modern (2015+) Javascript syntax. It's not going to work for you.
+      </div>
+      <div class="hidden warning" id="narrowWarning">
+        My apologies: a few page elements are probably too wide for this screen, and I 
+        haven't made the time to fix it yet. Those bits might work better in landscape
+        orientation?
+      </div>
+    </header>
+
+
+    <main>
+      <div id="diagram-pair">
+        <div class="diagram-anim">
+          <div class="diagramTitle">Home Frame</div>
+          <canvas id="HomeCanvas" class="canvas-diagram"
+            width="360" height="480"></canvas>
+          <canvas id="HomeAnim" class="canvas-anim"
+            width="360" height="40"></canvas>
+        </div>
+        <div class="diagram-anim" id="OtherDiagramAnim">
+          <div class="diagramTitle">Other Frame</div>
+          <canvas id="OtherCanvas" class="canvas-diagram"
+            width="360" height="480"></canvas>
+          <canvas id="OtherAnim" class="canvas-anim"
+            width="360" height="40"></canvas>
+        </div>
+      </div>
+
+
+      <div id="diagramControls" class="controlHolder">
+        <div id="undoButtons">
+          <button id="UndoButton" value="Undo">Undo</button>
+          <button id="RedoButton" value="Redo">Redo</button>
+        </div>
+
+        <div id="animationStuff" class="controlStack">
+        <!--<div id="animationButtons">-->
+          <button id="AnimStartPause" value="Start">Animate Motion</button>
+          <button id="AnimCancel" value="Cancel Animation">Clear Animation</button>
+        <!--</div>-->
+
+          <label class="timeValue">
+            Current <i>t</i>: 
+            <input id="TimesliceValue" type="number" value="-3" step="any" /></label>
+          <!--<input id="TimesliceRange" type="range" aria-label='Time slice slider'
+            value="6.5" min="0" max="10" step="any">-->
+        </div>
+
+        <div id="selectedEventControls" class="trajectoryEventControlBlock invisible">
+          <label class="timeValue grid-tVal"><i>t</i> = 
+            <input class="coordInput" type="number" step="any" id="selectedT"></label>
+          <label class="posValue grid-xVal"><i>x</i> = 
+            <input class="coordInput" type="number" step="any" id="selectedX"></label>
+          <label class="timeValue grid-tOVal"><i>t</i>′ = 
+            <input class="coordInput" type="number" step="any" id="selectedTO"></label>
+          <label class="posValue grid-xOVal"><i>x</i>′ = 
+            <input class="coordInput" type="number" step="any" id="selectedXO"></label>
+          <input class="vModeLabel vInMode hideIfLone grid-vIFixed"
+            aria-label="Fixed velocity value" 
+            type="radio" id="selected-vIn-fixed"
+            name="selected-vIn-Mode" value="FIXED">
+          <label class="vInputLabel hideIfLone grid-vIn"><i>v</i><sub>in</sub> = 
+            <input class="vInput" type="number" step="0.01" min="-0.99" max="0.99"
+              id="selectedVIn"></label>
+          <label
+            class="vInputLabel hideIfLone grid-vOIn"><i>v</i>′<sub>in</sub> = 
+            <input class="vInput" type="number" step="0.01" min="-0.99" max="0.99"
+              id="selectedVInO" ></label>
+          <label class="vModeLabel hideIfLone grid-vIAuto">
+            <input class="vInMode" type="radio" name="selected-vIn-Mode" 
+            value="AUTO" id="selected-vIn-auto">Auto</label>
+          <label class="vModeLabel hideIfLone grid-vIMatch">
+            <input class="vInMode" type="radio" name="selected-vIn-Mode" 
+            value="SAME" id="selected-vIn-same">Match</label>
+          <input class="vModeLabel vOutMode hideIfLone grid-vOFixed"
+            aria-label="Fixed velocity value" 
+            type="radio" id="selected-vOut-fixed" name="selected-vOut-Mode" value="FIXED">
+          <label class="vInputLabel hideIfLone grid-vOut"><i>v</i><sub>out</sub> = 
+            <input class="vInput" type="number" step="0.01" min="-0.99" max="0.99"
+              id="selectedVOut"></label>
+          <label class="vInputLabel hideIfLone grid-vOOut"><i>v</i>′<sub>out</sub> = 
+            <input class="vInput" type="number" step="0.01" min="-0.99" max="0.99"
+              id="selectedVOutO"></label>
+          <label class="vModeLabel hideIfLone grid-vOAuto"><input class="vOutMode" type="radio" 
+            name="selected-vOut-Mode" value="AUTO" id="selected-vOut-auto">Auto</label>
+          <label class="vModeLabel hideIfLone grid-vOMatch"><input class="vOutMode" type="radio"
+              name="selected-vOut-Mode" value="SAME" id="selected-vOut-same">Match</label>
+          <button class="eventCloseButton" aria-label="Remove event"
+            id="selected-removeEvent">
+            <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
+              <line x1="2" y1="2" x2="10" y2="10" stroke="currentColor" stroke-width="2"></line>
+              <line x1="10" y1="2" x2="2" y2="10" stroke="currentColor" stroke-width="2"></line>
+            </svg></button>
+          <div class="properTimeEvent hideIfLone"><input class="properTimeZero" 
+            aria-label="Set proper time zero" type="checkbox"
+            id="selected-properTimeZero" value="selected-tauZero">𝜏 = 
+            <output id="selectedTau"></output>
+          </div>
+          <div class="eventTitle">Selected event&nbsp;&nbsp;<output id="selectedName"></output></div>
+        </div>
+
+        <div class="controlStack">
+          <label> 
+            Other Frame <i>v</i>:
+            <input id="FrameBeta" class="vInput" type="number" value="0.5" 
+                  min="-0.96" max="0.96" step="0.01" /></label>
+
+          <label class="timeValue">
+            Heartbeats: 
+            <input id="HeartbeatStepVal" class="coordInput"
+                  type="number" value="1" min="0" step="0.25" /></label>
+
+          <label> 
+            Other Frame diagram
+            <input id="CheckboxShowOther" type="checkbox" /></label>
+          
+        </div>
+
+        <div id="coordRangeControls">
+          <label id="TimeUnitInputLabel">Time units: 
+            <input id="timeUnitInput" value="s" list="timeUnitOptions" 
+              class="symbolInput" /></label>
+          <label class="timeValue">
+            <i>t</i><sub>min</sub>:
+            <input id="tMinInput" class="coordInput" type="number" step="any"
+              value="-3" max="0" /></label>
+          <label class="timeValue">
+            <i>t</i><sub>max</sub>:
+            <input id="tMaxInput" class="coordInput" type="number" step="any"
+              value="14" min="0" /></label>
+          <label class="timeValue">
+            <i>t</i> step:
+            <input id="tStepInput" class="coordInput" type="number" step="any"
+              value="1" min="0" /></label>
+          <label class="posValue">
+            <i>x</i><sub>min</sub>:
+            <input id="xMinInput" class="coordInput" type="number" step="any"
+              value="" max="0" placeholder="Center" /></label>
+        </div>
+
+        <div id="loadSaveControls" class="controlStack">
+          <label>
+            Load example:
+            <select id="presetSelect" name="preset" aria-label="Load preset system">
+              <option value='' selected>-- Choose system --</option>
+              <option value='{"lone":[],"trajs":[],"tRange":{"minT":-3,"maxT":14,"step":1},"hstep":1,"beta":0.28}'>
+                Blank</option>
+              <option id="PassingHouse"
+                value='{"lone":[],"trajs":[{"n":"🏠","ev":[[-2,0,"S"],[4,0,"A","S"]],"c":0,"hb":0},{"n":"🏃‍♀️‍➡️","ev":[[-2,-1,"S"],[10,5,"A","S"]],"c":2,"hb":0},{"n":"✈️","ev":[[-0.5,-2,"S"],[11,7,"A","S"]],"c":3,"hb":0}],"tRange":{"minT":-3,"maxT":12,"step":1,"minX":-4,"minXAuto":false},"hstep":1,"unit":"s","beta":0,"oHide":true}'>
+                Passing a house</option>
+              <option id="MovingObjects"
+                value='{"lone":[],"trajs":[{"n":"🏠","t0":0,"ev":[[-3,-3,"S"],[7,-3,"A","S"]],"c":0},{"n":"🏃‍♀️‍➡️","t0":0,"ev":[[-3,-3,"S"],[11,0.92,"A","S"]],"c":2},{"n":"✈️","t0":0,"ev":[[-3,-3,"S"],[11,4,"A","S"]],"c":3},{"n":"🚀","t0":0,"ev":[[-3,-3,"S"],[7,5,"A","S"]],"c":4},{"n":"💡","t0":0,"ev":[[-3,-3,"S"],[5,5,"A","S"]],"c":0,"hb":0}],"tRange":{"minT":-3,"maxT":14,"step":1},"hstep":1,"beta":0.5}'>
+                Moving objects</option>
+              <option
+                value='{"lone":[],"trajs":[{"n":"","t0":0,"ev":[[0,-3],[3,0]],"c":4,"hb":0},{"n":"","t0":0,"ev":[[2,-3],[8,3]],"c":4,"hb":0},{"n":"","t0":0,"ev":[[4,-3],[13,6]],"c":4,"hb":0},{"n":"🦏","t0":0,"ev":[[-2,-3,"S"],[5,1.2,"A","S"]],"c":3},{"n":"🏠","t0":0,"ev":[[-2,-3,"S"],[3,-3,"A","S"]],"c":0}],"tRange":{"minT":-4,"maxT":14,"step":1},"hstep":1,"beta":0.6}'>
+                Light signals</option>
+              <option
+                value='{"lone":[],"trajs":[{"n":"🧑‍🎤","t0":0,"ev":[[0,-0.25,"S"],[5,-0.25],[10,-0.25,"A","S"]],"c":2},{"n":"🧑‍🚀","t0":1,"ev":[[-4,0.25,"S"],[0,0.25],[5,4.25],[10,0.25],[15,0.25,"A","S"]],"c":1}],"tRange":{"minT":-3,"maxT":14,"step":1},"hstep":1,"beta":0.5,"oHide":true}'>
+                Twin "paradox"</option>
+              <option
+                value='{"lone":[[2,-4,"💥",0],[4,4,"💥",4]],"trajs":[{"n":"🧨","t0":0,"ev":[[-3,-4,"S"],[2,-4]],"c":0},{"n":"🧨","t0":0,"ev":[[-3,4,"S"],[4,4]],"c":4}],"tRange":{"minT":-3,"maxT":10,"step":1},"hstep":1,"beta":0.5,"hbd":0}'>
+                Order of events</option>
+              <option
+                value='{"lone":[[3,-3,"💥",0],[3,3,"💥",4],[0,0,"🌟",1]],"trajs":[{"n":"🧨","t0":1,"ev":[[-5,-3,"S"],[3,-3]],"c":0},{"n":"🧨","t0":1,"ev":[[-5,3,"S"],[3,3]],"c":4},{"n":"","ev":[[0,0],[3,-3]],"c":1},{"n":"","ev":[[0,0],[3,3]],"c":1},{"n":"🧑‍🎤","t0":1,"ev":[[-5,0,"S"],[3,0,"A","S"]],"c":2}],"tRange":{"minT":-3,"maxT":10,"step":1,"minX":-4,"minXAuto":false},"hstep":1,"beta":-0.5,"hbd":0}'>
+                Laser ignition</option>
+              <option
+                value='{"lone":[],"trajs":[{"n":"🏃‍♀️‍➡️","ev":[[-4,-5,"S"],[4.3333,1.6667,"A","S"]],"c":2,"hb":0},{"n":"━","ev":[[-6.6667,-8.3333,"S"],[1.6667,-1.6667,"A","S"]],"c":3,"hb":0},{"n":"━","ev":[[-1.3333,-1.6667,"S"],[7,5,"A","S"]],"c":3,"hb":0},{"n":"━","ev":[[-2,-2.5,"S"],[6.3333,4.1667,"A","S"]],"c":3,"hb":0},{"n":"━","ev":[[-2.6667,-3.3333,"S"],[5.6667,3.3333,"A","S"]],"c":3,"hb":0},{"n":"━","ev":[[-3.3333,-4.1667,"S"],[5,2.5,"A","S"]],"c":3,"hb":0},{"n":"━","ev":[[-4.6667,-5.8333,"S"],[3.6667,0.8333,"A","S"]],"c":3,"hb":0},{"n":"━","ev":[[-5.3333,-6.6667,"S"],[3,0,"A","S"]],"c":3,"hb":0},{"n":"━","ev":[[-6,-7.5,"S"],[2.3333,-0.8333,"A","S"]],"c":3,"hb":0},{"n":"╠","ev":[[0,1.5,"S"],[5,1.5,"A","S"]],"c":4,"hb":0},{"n":"╣","ev":[[0,5,"S"],[5,5,"A","S"]],"c":4,"hb":0},{"n":"╬","ev":[[0,2,"S"],[5,2,"A","S"]],"c":4,"hb":0},{"n":"╬","ev":[[0,2.5,"S"],[5,2.5,"A","S"]],"c":4,"hb":0},{"n":"╬","ev":[[0,3,"S"],[5,3,"A","S"]],"c":4,"hb":0},{"n":"╬","ev":[[0,3.5,"S"],[5,3.5,"A","S"]],"c":4,"hb":0},{"n":"╬","ev":[[0,4,"S"],[5,4,"A","S"]],"c":4,"hb":0},{"n":"╬","ev":[[0,4.5,"S"],[5,4.5,"A","S"]],"c":4,"hb":0}],"tRange":{"minT":-3,"maxT":14,"step":1},"hstep":1,"beta":0.8}'>
+                Pole & barn</option>
+              <option
+                value='{"lone":[[6.25,1.5,"🚪",0],[6.25,5,"🚪",0]],"trajs":[{"n":"🏃‍♀️‍➡️","ev":[[-4,-5,"S"],[4.3333,1.6667,"A","S"]],"c":2,"hb":0},{"n":"━","ev":[[-6.6667,-8.3333,"S"],[1.6667,-1.6667,"A","S"]],"c":3,"hb":0},{"n":"━","ev":[[-1.3333,-1.6667,"S"],[7,5,"A","S"]],"c":3,"hb":0},{"n":"━","ev":[[-2,-2.5,"S"],[6.3333,4.1667,"A","S"]],"c":3,"hb":0},{"n":"━","ev":[[-2.6667,-3.3333,"S"],[5.6667,3.3333,"A","S"]],"c":3,"hb":0},{"n":"━","ev":[[-3.3333,-4.1667,"S"],[5,2.5,"A","S"]],"c":3,"hb":0},{"n":"━","ev":[[-4.6667,-5.8333,"S"],[3.6667,0.8333,"A","S"]],"c":3,"hb":0},{"n":"━","ev":[[-5.3333,-6.6667,"S"],[3,0,"A","S"]],"c":3,"hb":0},{"n":"━","ev":[[-6,-7.5,"S"],[2.3333,-0.8333,"A","S"]],"c":3,"hb":0},{"n":"╠","ev":[[0,1.5,"S"],[5,1.5,"A","S"]],"c":4,"hb":0},{"n":"╣","ev":[[0,5,"S"],[5,5,"A","S"]],"c":4,"hb":0},{"n":"╬","ev":[[0,2,"S"],[5,2,"A","S"]],"c":4,"hb":0},{"n":"╬","ev":[[0,2.5,"S"],[5,2.5,"A","S"]],"c":4,"hb":0},{"n":"╬","ev":[[0,3,"S"],[5,3,"A","S"]],"c":4,"hb":0},{"n":"╬","ev":[[0,3.5,"S"],[5,3.5,"A","S"]],"c":4,"hb":0},{"n":"╬","ev":[[0,4,"S"],[5,4,"A","S"]],"c":4,"hb":0},{"n":"╬","ev":[[0,4.5,"S"],[5,4.5,"A","S"]],"c":4,"hb":0}],"tRange":{"minT":-3,"maxT":14,"step":1},"hstep":1,"beta":0.8}'>
+                Pole & barn: doors</option>
+              <option
+                value='{"lone":[[7,5,"💥",0],[8.3333,3.6667,"💥",0],[7.6667,4.3333,"💥",0]],"trajs":[{"n":"🏃‍♀️‍➡️","ev":[[-4,-5,"S"],[7.6668,4.3335]],"c":2},{"n":"━","ev":[[-6.6667,-8.3333,"S"],[8.3332,3.6665]],"c":3},{"n":"━","ev":[[-1.3333,-1.6667,"S"],[7,5]],"c":3},{"n":"━","ev":[[-2,-2.5,"S"],[7.1668,4.8335]],"c":3},{"n":"━","ev":[[-2.6667,-3.3333,"S"],[7.3332,4.6665]],"c":3},{"n":"━","ev":[[-3.3333,-4.1667,"S"],[7.5,4.5]],"c":3},{"n":"━","ev":[[-4.6667,-5.8333,"S"],[7.8332,4.1665]],"c":3},{"n":"━","ev":[[-5.3333,-6.6667,"S"],[8,4]],"c":3},{"n":"━","ev":[[-6,-7.5,"S"],[8.1668,3.8335]],"c":3},{"n":"╠","ev":[[0,1.5,"S"],[5,1.5,"A","S"]],"c":4},{"n":"╣","ev":[[0,5,"S"],[5,5,"A","S"]],"c":4},{"n":"╬","ev":[[0,2,"S"],[5,2,"A","S"]],"c":4},{"n":"╬","ev":[[0,2.5,"S"],[5,2.5,"A","S"]],"c":4},{"n":"╬","ev":[[0,3,"S"],[5,3,"A","S"]],"c":4},{"n":"╬","ev":[[0,3.5,"S"],[5,3.5,"A","S"]],"c":4},{"n":"╬","ev":[[0,4,"S"],[5,4,"A","S"]],"c":4},{"n":"╬","ev":[[0,4.5,"S"],[5,4.5,"A","S"]],"c":4},{"n":"💥","ev":[[7,5],[9,3,"A","S"]],"c":0},{"n":"💥","ev":[[7,5],[9,4,"A","S"]],"c":0},{"n":"💥","ev":[[7,5],[9,5,"A","S"]],"c":0},{"n":"💥","ev":[[7,5],[9,6,"A","S"]],"c":0},{"n":"💥","ev":[[7,5],[12,9,"A","S"]],"c":0},{"n":"💥","ev":[[7,5],[9,7,"A","S"]],"c":0}],"tRange":{"minT":-3,"maxT":14,"step":1},"hstep":1,"beta":0.8,"hbd":0}'>
+                Pole & barn: resolved</option>
+              <option
+                value='{"lone":[],"trajs":[{"n":"🚀","t0":1,"ev":[[-3,2,"S"],[0,1,"S",0],[3,2,"A","S"]],"c":4},{"n":"⭐️","ev":[[0,0,"S"],[7,0,"A","S"]],"c":0}],"tRange":{"minT":-5,"maxT":12,"step":1},"hstep":1,"beta":0.6}'>
+                Accelerated motion</option>
+              <option
+                value='{"lone":[],"trajs":[{"n":"","t0":1,"ev":[[-3,2,"A",0],[0,0],[3,2,0,"S"],[6,0],[9,2,0,"S"],[12,0],[15,2,0]],"c":0}],"tRange":{"minT":-3,"maxT":15,"step":1},"hstep":1,"beta":0.28}'>
+                Bounce</option>
+              <option
+                value='{"lone":[],"trajs":[{"n":"🧑‍🎤","ev":[[0,-0.25,"S"],[5,-0.25],[10,-0.25,"A","S"]],"c":2},{"n":"🧑‍🚀","t0":1,"ev":[[-4,0.25,"S"],[0,0.25,"A","S"],[0.5,0.5],[5.5,4.5,"A","S"],[6.5,4.5],[11.5,0.5],[12,0.25,"S"],[15,0.25,"A","S"]],"c":1},{"n":"⭐️","ev":[[0,5,"S"],[8,5],[14,5,"A","S"]],"c":0}],"tRange":{"minT":-2,"maxT":16,"step":1,"minX":-8,"minXAuto":false},"hstep":1,"beta":0.5,"oHide":true}'>
+                Smooth twins</option>
+              <option
+                value='{"lone":[],"trajs":[{"n":"🚀","t0":1,"ev":[[-3,-4,"S"],[1,-4],[3,4],[6,4,"A","S"]],"c":0}],"tRange":{"minT":-3,"maxT":14,"step":1,"minX":-7},"hstep":0.5,"beta":0.6}'>
+                FTL in Other Frame</option>
+              <option
+                value='{"lone":[],"trajs":[{"n":"🚀","t0":1,"ev":[[-3,-4,"S"],[1,-4],[2,4,"A",0],[3,4.3333],[3.9375,4.8958],[-0.8125,-4.3542],[10,-4.3542,"A","S"]],"c":0}],"tRange":{"minT":-3,"maxT":14,"step":1},"hstep":0.5,"beta":0.6}'>
+                FTL = time travel</option>
+              <!--<option
+                value='{"lone":[[-0.5,-3.5,"A",0],[0.5,3.5,"B",3]],"trajs":[{"n":"🧑‍🚀","t0":0,"ev":[[-3,0.75],[-1,0.75,"A","S"],[0,1,"S"],[5,5,"A","S"],[6,5,"S"],[11,1,"A","S"],[12,0.75,"S"],[14,0.75]],"c":1},{"n":"🧑‍🎤","t0":0,"ev":[[-3,0.5],[0,0.5],[6,0.5],[11,0.5],[14,0.5]],"c":2},{"n":"⭐️","t0":0,"ev":[[-3,5.5],[0,5.5],[4,5.5],[11,5.5],[14,5.5],[17,5.5]],"c":0},{"n":"","t0":0,"ev":[[2.5,3],[5,0.5]],"c":3}],"tRange":{"minT":-3,"maxT":14,"step":1},"hstep":1,"beta":0.5}'>
+                Lots going on</option>-->
+            </select>
+          </label>
+
+
+          <div id="URLcontrols">
+            <label>Permalink: 
+              <input type="text" id="StateURL" value="" readonly />
+            </label>
+            <button id="CopyURL" value="Copy">Copy URL</button>
+          </div>
+        </div>
+
+      </div>
+
+
+      <div class="controlHolder">
+        <h2>Standalone events
+          <button id="AddLoneEvent" value="Add">Add Event</button>
+        </h2>
+        <div id="loneEventControls"></div>
+      </div>
+
+      <div class="controlHolder">
+        <h2>Trajectories
+          <button id="AddTrajectory" value="Add">Add Trajectory</button>
+        </h2>
+        <div id="trajectoryControls"></div>
+      </div>
+
+
+      <!-- <hr /> -->
+
+      <div id="description" class="textContent">
+        <h2 id="HowToUse">How to use this</h2>
+        <p>
+          If you've never studied spacetime diagrams in Einstein's
+          theory of special relativity, <a href="#Explanation">jump to
+            the conceptual introduction</a> now. Assuming you recognize
+          what you're lookig at here, I hope the general idea is fairly
+          straightforward. A few details to note:
+        </p>
+
+        <ul>
+          <li>All velocities are specified as a fraction of the speed of
+            light (from -1 to 1), but you can treat the units as
+            "<span class="velInfoExplicit"></span>" if you'd like.
+          </li>
+
+          <li>The default scenario shown is intentionally very simple:
+            no axes for an Other Frame are shown (because its <i>v</i>
+            is 0), and the Other Frame diagram is hidden (the checkbox
+            is unchecked). Try loading some of the pre-defined examples!
+          </li>
+
+          <li>When you press the "Animate Motion" button under the
+            diagrams, a yellow "time slice" line will show where each
+            diagram illustrates the current instant.
+          </li>
+
+          <li>Events (either "standalone" or part of a trajectory) can be
+            dragged around directly on the diagrams (they snap to
+            half-gridlines unless you hold the shift key), or edited in
+            the detailed data lists. (Data for the currently selected
+            event is also shown immediately below the diagram for easy
+            editing.)
+          </li>
+
+          <li>By default, timelike trajectories mark "heartbeats" (or
+            clock ticks) showing the proper time 𝜏 along the trajectory.
+            A radio button sets which event is the zero point. When
+            animating the motion, those "heartbeat" proper times will
+            flash below each moving object.
+          </li>
+
+          <li>By default, trajectories follow constant velocity paths
+            (straight lines) between events. But if you specify an
+            explicit incoming or outgoing velocity for an event (or
+            require the incoming and outgoing velocities to match,
+            for more realistic motion), some segments will have constant
+            (proper) acceleration instead.
+          </li>
+
+          <li>If the next event of a trajectory is not inside the future
+            light cone of the previous one, a constant velocity path
+            between them will be shown with distinct markings to indicate
+            its physical impossibility. Because no massive object could 
+            follow such a path, any such step is treated as lasting one
+            graph unit of proper time (think of it as the time it takes
+            for the TARDIS to rematerialize somewhere else).
+          </li>
+
+          <li>You can label an event or trajectory with any symbol you'd
+            like (I recommend just a single character). If you leave it
+            blank, the label will be a simple circle (Clicking in the
+            empty field (twice?) will pop up a list of suggested emoji.)
+          </li>
+        </ul>
+
+      </div>
+
+      <output id="systemStateOutput"></output>
+
+      <datalist id="trajectoryIcons">
+        <option>⭐️</option>
+        <option>🚀</option>
+        <option>🧑‍🚀</option>
+        <option>☄️</option>
+        <option>🚂</option>
+        <option>✈️</option>
+        <option>🦏</option>
+        <option>🦸</option>
+        <option>🧑‍🎤</option>
+        <option>🏠</option>
+        <option>🌎</option>
+        <option>🪐</option>
+      </datalist>
+
+      <datalist id="eventIcons">
+        <option>💥</option>
+        <option>🌟</option>
+        <option>🎉</option>
+        <option>🧨</option>
+        <option>🔥</option>
+        <option>🗣️</option>
+        <option>😱</option>
+      </datalist>
+
+      <datalist id="timeUnitOptions">
+        <option>y</option>
+        <option>s</option>
+        <option>h</option>
+        <option>ns</option>
+        <option>min</option>
+      </datalist>
+    </main>
+
+    <script>
+      var es6support = true;
+      try {
+        eval('class CanaryCoalMine {}');
+      } catch(e) {
+        es6support = false;
+      }
+      if (!es6support) {
+        document.getElementById('unsupportedWarning').classList.remove('hidden');
+      }
+    </script>
+
+  </body>
+</html>

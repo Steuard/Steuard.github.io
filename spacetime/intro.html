@@ -1,0 +1,643 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Motion and Relativity with Spacetime Diagrams</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="Author" content="Steuard Jensen" />
+    <script type="module" crossorigin src="./assets/intro-DUcSXL0Q.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/System-BOI9hxz9.js">
+    <link rel="stylesheet" crossorigin href="./assets/System-CHx0tuS1.css">
+  </head>
+
+  <body>
+    <header data-diagram-state="MotionIntro">
+      <h1>Understanding Motion and Relativity with Spacetime&nbsp;Diagrams</h1>
+      <div class="notes">
+        <p>by Steuard Jensen, Alma College.</p>
+        <p>Already know spacetime diagrams? <a href="./">Use the main app.</a></p> 
+      </div>
+
+      <noscript>
+        <div style="color: red; margin: 2rem;">
+          It looks like you've got Javascript turned off. (Good for you: I browse that
+          way, too.) You'll need to enable it to see the diagrams that are the whole
+          point of this page.
+        </div>
+      </noscript>
+      <div class="hidden warning" id="unsupportedWarning">
+        My apologies. You're using an older browser, and I've been lazy and written this
+        app just using modern (2015+) Javascript syntax. It's not going to work for you.
+      </div>
+      <div class="hidden warning" id="narrowWarning">
+        Because of the side-by-side content here and your narrow screen, this page might work better in landscape
+        orientation.
+      </div>
+    </header>
+
+
+    <main id="introDisplay">
+      <div id="diagram-pair" class="invisible">
+        <div class="diagram-anim">
+          <!-- <div class="diagramTitle">Home Frame</div> -->
+          <canvas id="HomeCanvas" class="canvas-diagram"
+            width="360" height="480"></canvas>
+          <canvas id="HomeAnim" class="canvas-anim"
+            width="360" height="40"></canvas>
+        </div>
+        <div class="diagram-anim hidden" id="OtherDiagramAnim">
+          <div class="diagramTitle">Other Frame</div>
+          <canvas id="OtherCanvas" class="canvas-diagram"
+            width="360" height="480"></canvas>
+          <canvas id="OtherAnim" class="canvas-anim"
+            width="360" height="40"></canvas>
+        </div>
+      </div>
+
+
+      <!-- <div id="diagramControls" class="controlHolder">
+
+        <div id="animationStuff" class="controlStack">
+          <button id="AnimStartPause" value="Start">Animate Motion</button>
+          <button id="AnimCancel" value="Cancel Animation">Clear Animation</button>
+
+          <label class="timeValue">
+            Current <i>t</i>: 
+            <input id="TimesliceValue" type="number" value="-3" step="any" /></label>
+        </div>
+      </div> -->
+
+      <div class="textContent">
+
+        <section data-diagram-state="MotionIntro">
+          <h2 id="Explanation">Motion in one dimension</h2>
+          <p>
+            Spacetime diagrams are a way to describe motion: to tell the
+            story of how an object's position changes over time.
+            As we'll see, their features make them great for intuitively
+            understanding a whole story at once without the need for
+            equations, and they're designed to be particularly helpful for
+            illustrating the surprising relationships between space and
+            time that Einstein described in his theory of special
+            relativity.
+          </p>
+
+          <canvas id="DupHomeAnim" class="canvas-anim"
+            width="360" height="40"></canvas>
+
+          <p>
+            One simplifying limitation is that spacetime diagrams usually
+            only describe motion in <em>one dimension</em>: motion back
+            and forth along a straight line, as shown here. (Formally,
+            we'll call this the <i>x</i>-axis, with +<i>x</i> to the
+            right.) Things would only get a little more complicated if we
+            considered motion in 2D or 3D, but it would be much harder to
+            draw.
+          </p>
+
+          <p>
+            The essential thing about motion is that an object's position
+            changes with time. In an animation like the ones shown here,
+            we're watching that as it happens: the object may move left
+            or right, faster or slower, and it makes intuitive sense. But
+            that means that we need to wait through the whole animation to
+            see everything that happens, and we're limited in the kinds of
+            reasoning that we can do to understand relationships
+            between space and time.
+          </p>
+        </section>
+
+        <section data-diagram-state="DiagramBasics">
+          <h3>Spacetime diagram basics</h3>
+          <p>
+            To describe and analyze the whole story at once, we will
+            instead represent time graphically:
+            we'll draw it as an axis on our diagram, perpendicular to the
+            left-right (<i>x</i>) position axis, with +<i>t</i> pointing
+            up. (This takes a little getting used to, since time is the 
+            "independent variable"—we write <i>x</i>(<i>t</i>), not
+            <i>t</i>(<i>x</i>)—and graphs in math classes usually put the
+            independent variable on the horizontal axis. I sometimes
+            think of it like rock layers in geology, with the oldest on
+            the bottom.) The motion of the object is represented as a 
+            curving path up through time.
+            <span id="FirstScrollReminder">[To see this, scroll down a
+              little.]</span>
+          </p>
+
+          <p>
+            In the example at right, as the animation runs below the
+            diagram, a yellow horizontal line moves up the graph to label
+            the current time. (I sometimes call that line a "time slice",
+            since it represents a "slice" of history at a given time.)
+            At any particular moment, the position of the object is 
+            exactly where the yellow line intersects the object's path on
+            the diagram. (This path is formally called the object's
+            <em>worldline</em>. In the diagrams here, each worldline is 
+            labeled occasionally with its corresponding object.) It takes
+            some getting used to, but with practice you can look at a 
+            spacetime diagram and understand the whole story at once.
+          </p>
+
+          <p>
+            Remember, the actual motion of the object is always just
+            back and forth along the <i>x</i>-axis, as in the animation!
+            It's common when learning this for the first time to
+            mistakenly imagine the diagram as a top-down view of motion,
+            like a map. But the right way to think of it is one horizontal
+            "time slice" at a time. "Up" along the diagram means "later",
+            not "north".
+          </p>
+        </section>
+
+
+        <section data-diagram-state="DiagramVelocities">
+          <h3>Relative velocities</h3>
+          <p>
+            Now that we've got the basic idea of how spacetime diagrams
+            work, we can start building intuition about what they mean.
+            Consider the example shown at right of an airplane flying over
+            a house while a rocket zips by. We can immediately spot some
+            patterns:
+          </p>
+
+          <ul>
+            <li>Objects moving with constant velocity have straight lines
+              on the diagram.
+            </li>
+            <li>The slope of the line corresponds to the speed: faster is
+              flatter, slower is steeper.
+              (This is the opposite of traditional graphs where time is
+              horizontal.)
+            </li>
+            <li>An object sitting still has its worldline go straight
+              up. In this case, the house's worldline is right on top
+              of the <i>t</i>-axis at <i>x</i>&nbsp;=&nbsp;0. Maybe this
+              diagram was drawn by someone in the house!</li>
+          </ul>
+
+          <p>
+            That last observation raises an important point: every diagram
+            makes an implicit choice of <em>whose</em> perspective it is
+            from: some observer's <em>reference frame</em>. Because this
+            diagram is in the house's reference frame, the house is shown
+            sitting still (and at the origin of coordinates: 
+            <i>x</i>&nbsp;=&nbsp;0).
+          </p>
+        </section>
+
+
+        <section data-diagram-state="RelativeMotion">
+          <p>
+            Isn't it <em>obvious</em> that the house is sitting still?
+            Well, let's look at this same story in the reference frame
+            of someone on the plane. It's very easy for that person to
+            think of themselves as sitting still, with the rest of the
+            world drifting by outside the window. (I've made that mistake
+            myself more than once, thinking the plane at the next gate
+            over was pulling forward when actually my plane was pulling
+            back.)
+          </p>
+
+          <p>
+            So in the plane's reference frame, what do we see? The plane
+            is at rest at <i>x</i>&nbsp;=&nbsp;0, with its worldline up
+            along the <i>t</i>-axis. The house is drifting past the plane
+            toward the left, and the rocket only very slowly comes up from
+            behind and passes it by. (Our usual experience is that we just
+            subtract to find the rocket's apparent speed in the plane's
+            frame: if the plane's ground speed is 300&nbsp;m/s and the
+            rocket's ground speed is 500&nbsp;m/s, then from inside the
+            plane it looks like the rocket is going 200&nbsp;m/s.)
+          </p>
+
+          <p>
+            As we'll discuss later, every reference frame moving at
+            constant velocity has an equal claim to be "sitting still".
+            (Maybe you're thinking, "Okay, but we <em>know</em> it's
+            really the house that's sitting still." My answer is just
+            to remind you that the Earth itself is blazing through space
+            extremely fast as it orbits the Sun, and the Sun itself is
+            orbiting the center of the galaxy, and so on.)
+            So since we can't declare any one reference frame to be the
+            "real" frame, we'll content ourselves with just picking one
+            of them as our own chosen "Home Frame" where we'll mainly
+            tell the story, and anything else we'll call an "Other Frame".
+          </p>
+        </section>
+
+
+        <section data-diagram-state="AcceleratedMotion">
+          <h3>Acceleration: changing velocity</h3>
+          <p>
+            What does it look like on the diagram when motion
+            <em>isn't</em> at constant velocity? Well, the object's
+            worldline will have to get flatter and steeper as it moves
+            faster and slower, so it won't be a straight line anymore.
+            A curving worldline is a clear sign that the object is
+            changing velocity: that it is <em>accelerating</em> in one
+            direction or another. (If it curves flatter, it's speeding
+            up; if it curves steeper, it's slowing down.)
+          </p>
+
+          <p>
+            It's worth pointing out that while sitting on an airplane
+            that's cruising at constant velocity might feel like you're
+            sitting still, if you're sitting in an <em>accelerating</em>
+            airplane as it takes off, you definitely know it! So
+            unless we want to introduce a lot more complexity, we won't
+            ever choose an accelerating observer as the definition of
+            a reference frame. (The nice reference frames that aren't
+            accelerating are formally called <em>inertial frames</em>.)
+          </p>
+        </section>
+
+
+
+
+        <section data-diagram-state="EinsteinRelativity" class="h2section">
+          <h2>Einstein's principle of relativity</h2>
+          <p>
+            That covers the basics of what spacetime diagrams are all
+            about. But where they really shine is in helping us understand
+            the weird aspects of the universe that Einstein explained in
+            the <em>special theory of relativity</em>. (That's "special"
+            as in "specialized": he later developed <em>general</em>
+            relativity, which applies more generally, beyond just inertial
+            reference frames.)
+          </p>
+
+          <p>
+            The fundamental principle of relativity is that <strong>the
+            laws of physics are the same in every inertial reference
+            frame.</strong> So, for example, if you've got two magnets
+            and you try to hold their north poles one finger-width apart
+            from each other, you'll need to push them together with a
+            specific force. You'd certainly expect that amount of force
+            to be the same whether you were sitting in your house or on
+            an airplane! And sure enough, in one of the laws of physics
+            there's a parameter (𝜇₀) that determines exactly how strong
+            magnetic forces are at a given distance.
+          </p>
+
+          <p>
+            You'd have exactly the same expectations about electric
+            forces: for example, if you rub a balloon on your hair, its
+            static charge should tug upward on your hair just as much in
+            an airplane as in your house. There's a parameter in the laws
+            of physics (𝜀₀) that determines that, too, and you could easily
+            do experiments to pin down the numerical values of each one.
+          </p>
+
+          <p>
+            So here's where Einstein had the blindingly brilliant insight
+            that starts to break your brain. When you put the laws of
+            physics about electricity and magnetism together, you find out
+            that <em>light</em> is really a wave wiggling the electric and
+            magnetic fields, and the speed of that wave is just a simple
+            combination of those two physical constants. (The speed is 
+            <i>c</i>&nbsp;=&nbsp;1/√𝜀₀𝜇₀: about 3×10⁸&nbsp;m/s.) So here's
+            Einstein's radical idea: this is just a specific number,
+            derived directly from the laws of physics, so <em>the speed
+            of light must be the same in every inertial reference frame</em>.
+          </p>
+        </section>
+
+        <section data-diagram-state="LightspeedConst">
+          <p>
+            Why is that radical? Because our rule has always been to
+            subtract velocities when you change to a different reference
+            frame! We'd expect that if light was moving 3×10⁸&nbsp;m/s
+            as seen by the house, and we were on a rocket moving
+            2×10⁸&nbsp;m/s, then on the rocket they'd see the light moving
+            just 1×10⁸&nbsp;m/s. But the principle of relativity says
+            it doesn't work that way: the rocket sees the light moving
+            at 3×10⁸&nbsp;m/s exactly the same as the house does! (After
+            all, they both measure the same values of those physical
+            constants, and they both use the same law to put them
+            together.) For that to be true, something truly bizarre must
+            be going on with how different reference frames measure space
+            and time.
+          </p>
+
+          <p>
+            For our diagrams, though, there's one immediate consequence:
+            the slope of the worldline for anything moving at the speed
+            of light must always be exactly the same. To make this
+            especially convenient, we'll always choose to measure time and
+            distance in "matching" units: if we measure time in years,
+            we'll measure distance in light-years. If we measure time in
+            seconds, we'll measure distance in light-seconds, and so on.
+            That means that by definition, the speed of light will always
+            be "1", whether that means "1&nbsp;ly/y" or "1&nbsp;ls/s".
+            So on our diagrams, the worldline of light will always have a
+            slope of 1 and tilt at a 45° angle (either left or right).
+            (And since nothing can move faster than light, every worldline
+            is always less than 45° away from the vertical axis.)
+          </p>
+        </section>
+
+
+        <section data-diagram-state="SimultaneousEvents">
+          <h3>Simultaneous events</h3>
+          <p>
+            Other scientists had noticed parts of this before, but
+            Einstein's great achievement was to take it absolutely
+            literally and work through the implications with extreme
+            care, no matter how weird the results. We'll try to do the
+            same thing here, though you'll need a formal textbook if you
+            want to see the details. We'll hold tightly to two core
+            principles: that the speed of light must be the same for
+            every observer, and that every observer must agree about
+            any physically measureable "event" (I scratch my nose, a bug
+            hits the windshield, a detector goes "ping", etc.). Each
+            observer will assign a specific time and a specific location
+            to a given event, but we won't assume that they'll all assign
+            the <em>same</em> time and location coordinates.
+          </p>
+
+          <p>
+            To start figuring out how time really works, a good first
+            step is to ask, "How can I make sure two events happen at
+            exactly the same time?" We'll want to set up a scenario
+            based on observable physical events that everyone has to
+            agree about (e.g. "has this firecracker exploded yet, or
+            not?"), and we'll want to base our reasoning on the speed of
+            light (e.g. "the center of a room is the point where a flash
+            of light that bounces off mirrors on each side will come
+            back from both directions at the same time.")            
+          </p>
+
+          <p>
+            Here's the plan: in our coordinate frame, we stand at rest in
+            the exact center of a room, and we place one firecracker on
+            each side. The fuse on each one is attached to a detector that
+            will detonate it when it detects light. At time
+            <i>t</i>&nbsp;=&nbsp;0, we activate a strobe light that we're
+            holding. That flash of light (shown here as a blue dot going
+            in each direction) will reach each firecracker at the same time, 
+            so they're guaranteed to go off simultaneously.
+            <em>(If you want specific numbers, we could say for simplicity
+            that each firecracker is 3&nbsp;light-seconds away, even though
+            that's ridiculously big. That would mean that the lines on this
+            graph are in units of 1&nbsp;s (time) or 1&nbsp;ls
+            (distance). The light will arrive at 
+            <i>t</i>&nbsp;=&nbsp;3&nbsp;s.)</em>
+            For future reference, I've also labeled our central observer
+            at this same instant in time (maybe we blinked at that event).
+          </p>
+        </section>
+
+
+        <section data-diagram-state="DifferentSimultaneity">
+          <p>
+            Our plan seems foolproof! But what I didn't tell you is that
+            our room was actually in an interstellar shipping container
+            loaded on a spaceship going half the speed of light. So an
+            observer on the Earth watching our experiment will see us and
+            both firecrackers moving at that same speed: parallel lines
+            angling up the diagram. At some moment, they see us flash our
+            strobe light, and they see the light travel in both
+            directions: 45° lines on their diagram. But the flash going
+            backward doesn't have to travel as far, because the
+            firecracker is moving, too: they meet in the middle. On the
+            other hand, the flash going forward has to travel much
+            farther because it has to catch up to the front firecracker
+            as it moves away. So even though <em>we</em> saw both
+            firecrackers explode at the same instant, the observer on
+            Earth sees the one in front explode substantially later
+            than the one in back.
+          </p>
+
+          <p>
+            How could it be possible that two events are both simultaneous
+            and not simultaneous depending on who's looking? Most people
+            would reach that conclusion and say, "Either I've made a
+            mistake, or one of my assumptions must be subtly wrong." But
+            Einstein said, "I've checked my reasoning and I insist on my
+            assumptions, so I guess this is just how the world works!"
+            Observers in different reference frames can disagree on the
+            order of events! (Shockingly, this doesn't break cause and
+            effect, but explaining why is another story.)
+          </p>
+        </section>
+        
+
+        <section data-diagram-state="TiltedTimeSlices">
+          <h3>Time and position in an Other Frame</h3>
+          <p>
+            To make sense of this, we can look at the graph and recognize
+            that the two explosions and the center observer label that
+            were all along the third (horizontal!) coordinate line in our
+            Spaceship Frame diagram still appear to lie along a straight line
+            in this Earth Frame diagram, but now that line is
+            <em>tilted</em>. If we had arranged a series of different
+            light flashes to set off more firecrackers at exactly that
+            same instant in our Spaceship Frame, all those explosions would
+            show up along this same tilted line in the Earth Frame. And if
+            we'd flashed our light a little earlier or later,
+            we would have gotten different but parallel tilted lines.
+            Similarly, objects that were at fixed locations in the
+            Spaceship Frame (like all three objects here) all follow parallel
+            (tilted) paths on the Earth Frame diagram.
+          </p>
+
+          <p>
+            What that means is that we can sketch lines of constant time
+            and position as seen by the Spaceship Frame as a
+            <em>tilted</em> coordinate grid when drawn on the Earth Frame
+            diagram. (Traditionally, we call the coordinates of the
+            diagram's own Home Frame <i>t</i> and <i>x</i>, and the
+            coordinates of the tilted Other Frame <i>t′</i> and <i>x′</i>,
+            pronounced "<i>t</i>&nbsp;prime" and "<i>x</i>&nbsp;prime".
+            For convenience, we typically define both coordinate systems
+            so the origin is the same event in each of them.)
+            If you look carefully, you'll even see that the Other Frame's
+            time axis tilts down from vertical by exactly the same angle
+            that its position axis tilts up from horizontal. Nifty!
+          </p>
+        </section>
+
+
+        <section data-diagram-state="SlowerHeartbeats">
+          <p>
+            Thinking through this tilted Spaceship Frame grid can lead us
+            to another bizarre conclusion about time in relativity: the
+            Earth Frame observer sees time passing slower on the spaceship
+            than it's passing on Earth! The diagram illustrates this in a
+            straightforward way. First, we'll add a worldline for our
+            Earth observer, and we'll mark a dot along that path for their
+            heart beating exactly once every second: every time the Earth
+            crosses one of the Home Frame coordinate lines. (We'll count
+            the heartbeats in the animation, too.)
+            <em>(Most people would call these "clock ticks", but I think
+            "heartbeats" is more viscerally relatable.)</em>
+          </p>
+
+          <p>
+            If we'd done the same thing on our original Spaceship Frame
+            diagram, we would have drawn a dot every time our central
+            worldline crossed one of <em>those</em> coordinate lines.
+            But since heartbeats are physical events, on the Earth Frame
+            diagram each of our heartbeats must happen when our tilted
+            worldline crosses one of the <em>tilted</em> coordinate lines.
+            Comparing the two paths (we've coordinated so they both beat
+            at the origin event as we pass the Earth), we can see that the
+            Earth observer sees our spaceship heartbeats lagging behind
+            their own. They conclude that our clocks (and heartbeats) are
+            running slow. (And the faster the spaceship travels, the more
+            the coordinates tilt and the slower the moving clock seems to
+            run.)
+          </p>
+        </section>
+
+
+        <section data-diagram-state="EachLooksSlower">
+          <p>
+            But now let's go back to our Spaceship Frame diagram, this
+            time including the Earth observer's worldline and their
+            coordinate grid (which is tilted the opposite way). Now
+            our heartbeats happen at the expected coordinate intervals,
+            and we see the Earth observer's heartbeats running slow!
+            This seems like a paradox: how is it possible that we each
+            believe that the other's clocks are running slow?
+
+          </p>
+
+          <p>
+            It would take us too far afield to give a satisfying answer
+            to that puzzle here. But the essential solution to this
+            apparent paradox (and many others) is that it's not reliable
+            to compare events that are far apart in space, more or less
+            because different observers disagree on which events are
+            simultaneous. (If you look at the Earth observer's third
+            heartbeat event here and follow its tilted coordinate line
+            over to our spaceship observer, you'll see that line intersect
+            <em>before</em> the spaceship observer's third heartbeat,
+            just as we saw in the Earth frame diagram.)
+            <!--There are great classes and books out there if you want to
+            explore this further, or maybe you could even puzzle it out
+            for yourself by playing with these diagrams in
+            <a href="./">the interactive app</a> on this site.-->
+          </p>
+        </section>
+
+
+        <section data-diagram-state="TwinParadox">
+          <h3>The "Twin Paradox"</h3>
+          <p>
+            The classic illustration of these ideas that <em>does</em>
+            work reliably by comparing events at the same location is
+            often called the "Twin Paradox". Two twins grow up on Earth,
+            but one stays home while the other becomes an astronaut. On
+            their mutual 20th birthday, the astronaut twin departs on a
+            rocket to visit a distant star four light-years away. The
+            rocket is very fast: it travels there and back at 4/5 the
+            speed of light, so (as measured by the twin on Earth) the
+            rocket at its destination five years after leaving. It takes
+            some quick data and immediately comes back home. But as
+            illustrated here, because the rocket is moving so fast, the
+            Earth twin sees the astronaut twin's clock and hearbeats
+            running slow: the traveling twin is aging more slowly. By
+            the time they get back to Earth, the Earth twin is 30 years
+            old while the astronaut twin is only 26. (And if the rocket
+            had traveled even faster, the astronaut could have been just
+            21 when they got home, or 20.01.)
+          </p>
+
+          <p>
+            That's a weird and remarkable result, almost as if the
+            astronaut twin has time-traveled into the future. (We've
+            done lots of experiments with tiny particles that have
+            verified that this really works, too.)
+            But surprising as it may be, this is not actually the
+            "paradox" in the name: it's not an inconsistency that
+            would disprove the theory, just an unexpected result.
+            The supposed paradox instead goes like this:
+            "But what if we told this
+            story from the astronaut twin's point of view? They should
+            see the Earth twin as the one who's moving and think that
+            Earth clocks are the ones running slow. So the astronaut twin
+            and the Earth twin should make contradictory predictions
+            about who will be younger when they get home, but that's a
+            physically observable outcome that they ought to agree on."
+            (The implication would then be that relativity is an
+            inconsistent theory and therefore incorrect.) 
+            </p>
+
+            <p>I can't quite
+            yet illustrate the resolution of that here, but the essential
+            point is that the astronaut twin's path is not an inertial
+            reference frame: at the distant star, they must accelerate
+            back toward Earth to turn around and go home. So that twin's
+            experience is measurably different than the Earth twin's,
+            and it's subtle to apply special relativity to an
+            accelerated frame. The reasoning in the "paradox" isn't
+            valid, and relativity remains a consistent theory.
+          </p>
+        </section>
+
+
+
+        <section data-diagram-state="TwinParadox">
+          <h2>So what's next?</h2>
+          <p>
+            There are so many additional directions out there to explore:
+            the correct rules for how velocity changes in an Other Frame,
+            or the fact that a moving object appears to have a shorter
+            length than it does at rest, or accelerated motion, or
+            the rules of cause and effect... the list goes on and on.
+            There are great courses and great books out there about
+            relativity. (I've been teaching for years out of the
+            <a href="https://physics.pomona.edu/sixideas/"><i>Six
+            Ideas That Shaped Physics</i></a> textbooks by Thomas Moore: 
+            Unit&nbsp;R of that series covers special relativity, with
+            a particular focus on spacetime diagrams. I also very much
+            enjoyed learning the subject myself from 
+            <a href="https://uscibooks.aip.org/books/special-relativity/"><i>Special
+            Relativity</i></a> by Thomas Helliwell, my undergrad advisor.)
+            I know there are great online resources, too: videos and
+            tutorials and interactive texts.
+          </p>
+          <p>
+            Whether you follow a formal textbook or just want to play
+            around with these ideas on your own, I encourage you to play
+            around with <a href="./">the main interactive
+            spacetime diagram app</a> on this site. There are instructions
+            and loadable examples on that main page, and you can experiment
+            with scenarios like the ones here. One option that this
+            introduction hasn't illustrated is the ability to display two
+            diagrams of the same scenario in different frames side by
+            side. (There's a checkbox in the controls.) You can manipulate
+            the events in a trajectory directly with a mouse or a touch
+            interface, or you can have fine control over each event's
+            coordinates (in either frame) and over the trajectory's
+            velocity as it leads into the event or departs out of it
+            (options which usually correspond to accelerated motion).
+            Try it out, and have some fun! My hope is that by playing
+            around with these diagrams, you'll wind up with a deeper
+            understanding of the weird and wonderful way that our world
+            works.
+          </p>
+
+          <div class="BigCentered"><a href="./">Play with the app now!</a></div>
+        </section>
+
+      </div>
+
+    </main>
+
+    <script>
+      var es6support = true;
+      try {
+        eval('class CanaryCoalMine {}');
+      } catch(e) {
+        es6support = false;
+      }
+      if (!es6support) {
+        document.getElementById('unsupportedWarning').classList.remove('hidden');
+      }
+    </script>
+
+  </body>
+</html>

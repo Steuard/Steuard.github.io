@@ -1,0 +1,40 @@
+html, body, .content hr { background: #276A87; }
+* html { background: transparent none; }
+.content *[align], .content .alignleft, .content .alignright {
+  background: #276A87;
+}
+body, html { color: black; }
+#title { border-bottom-color: #276A87; }
+
+#title, .content, #nav a:hover span { background: #A3C0CC; }
+#nav .curnav { border-color: #A3C0CC; }
+#title, .content { color: black; }
+#nav a:hover span { color: maroon; }
+
+#nav a { background: #3A5B6A; color: aqua; }
+
+#nav a:hover { background: #4C8195; color: aqua; }
+#hoverpre { display: none; }
+
+
+.content#news h2, .content#news h2 a {
+  color: red;
+  background: inherit;
+}
+
+a:link { color: #0000EE;  background: inherit; }
+a:visited { color: #551A8B;  background: inherit; }
+a:link:hover, a:link:focus {
+  color: #006600;
+  background: inherit;
+}
+a:visited:hover, a:visited:focus {
+  color: #006666;
+  background: inherit;
+}
+a:link:active, a:visited:active {
+  color: red;
+  background: inherit;
+}
+
+.details { color: #600;  background: inherit; }

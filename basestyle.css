@@ -1,0 +1,300 @@
+/* General style sheet for Steuard Jensen's web site.             */
+/* A tiny bit of default color, then builtins, then classes/ids.  */
+/* I've done a little so this degrades to IE Win more gracefully. */
+/* For the HTML element, I've resorted to two ugly hacks.  Ick.   */
+
+/* Never mind about the default color: that's for other files.    */
+/*
+html, body, .content hr { background: #276A87;  color: black; }
+* html { background: transparent; }
+.content *[align], .content .alignleft, .content .alignright {
+  background: #276A87;
+  color: black;
+}
+#title, .content, #nav a:hover span { background: #A3C0CC; }
+#title { border-bottom-color: #276A87; }
+#nav a:hover span { color: maroon; }
+#nav a { background: #3A5B6A; color: aqua; }
+.details { color: #600;  background: inherit; }
+*/
+
+body, html {
+  margin-top: 0;
+  margin-right: 0;
+  font: large Verdana,sans-serif;
+}
+
+p { text-indent: 1.5em; }
+p.noindent { text-indent: 0; }
+
+ul,ol,dl {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+ul li, ol li, dl li {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+#title {
+  margin: 0 0 1em 9.25em;
+  padding: 0.5em 1em 0.25em 0.5em;
+  text-align: center;
+  border-bottom-style: double;
+  border-bottom-width: 0.25em;
+}
+
+.content {
+  margin: 1em 0.5em 1em 9.25em;
+  padding: 0.25em 0.5em 0.25em;
+}
+
+.noshow { visibility: hidden; }
+#nav a.noshow br { display: none; }
+
+
+.topiclabel { text-decoration: underline; }
+
+.displayed, .centered { text-align: center; }
+img.displayed, img.centered, table.displayed, table.centered {
+  margin-left: auto; margin-right: auto;
+}
+.displayed>*, .centered>* {
+  margin-left: auto; margin-right: auto;
+}
+/* Include a couple of special rules for IE Win:               *
+ * These could cause problems, but better than the alternative */
+.displayed img, .displayed table, .centered img, .centered table {
+  margin-left: auto; margin-right: auto;
+}
+
+.centernote {
+  margin-left: auto; margin-right: auto;
+  padding: 0em 5em;
+  margin-top: 0.2em;
+  text-indent: 0em;
+}
+
+/* Don't let images be wider than their containers! */
+.content img { max-width: 100%; height: auto; }
+
+/* Responsive video sizing, by Thierry Koblentz & Rachel McCollin */
+.video-container {
+    position: relative;
+    padding-bottom: 56.25%;
+    padding-top: 35px;
+    height: 0;
+    overflow: hidden;
+    max-width: 854;
+    margin-left: auto;
+    margin-right: auto;
+}
+.video-container iframe {
+    position: absolute;
+    top:0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+
+.clearall { clear: both; }
+
+ol.outlinetop { list-style-type: upper-roman; }
+
+#nav {
+  position: absolute;
+  top: 4em;
+  left: 0.75em;
+  width: 7.75em;
+}
+body>#nav { position: fixed; }
+
+#hoverpre {
+  position: absolute;
+  bottom: 0.5em;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  z-index: -1;
+}
+
+#title h1 {
+  margin: 0;
+}
+
+#title h2, #title h3, #title h4 {
+  margin: 0.5em 0 0;
+}
+
+#title h4 {
+  text-align: right;
+  font-style: italic;
+}
+
+.content p, .content ul, .content ol, .content dl, .content table *,
+.content blockquote, .content span, .content center {
+  font-size: medium; font-family: Georgia,serif;
+}
+.content h2  { font:      x-large Verdana,sans-serif; }
+.content h3  { font: bold large   Verdana,sans-serif; }
+.content h4  { font: bold medium  Verdana,sans-serif; }
+.content pre { font:      medium  monospace; }
+
+.content hr {
+  border: none;
+  height: 2px;
+  clear: both;
+}
+
+.content .alignleft, .content .alignright {
+  position: relative;
+  font: large Verdana,sans-serif;
+  margin: 0.25em 0;
+  border-style: none;
+}
+.content .alignleft {
+  float: left;
+  left: -0.5em;
+  margin-right: 0.5em;
+  padding: 0.5em 0.5em 0.5em 0;
+  clear: left;
+}
+.content .alignright {
+  float: right;
+  right: -0.5em;
+  margin-left: 0.25em;
+  padding: 0.5em 0 0.5em 0.5em;
+  clear: right;
+}
+
+.content>:first-child, .content>a:first-child>img { margin-top: 0; }
+.content>*[align]:first-child + *,
+.content>.alignleft:first-child + *,
+.content>.alignright:first-child + *,
+.content>a:first-child>.alignleft + *,
+.content>a:first-child>.alignright + * { margin-top: 0; }
+/* CSS 3: .content>:last-child { margin-bottom: 0; } */
+
+.content>a:first-child>img, .content>img:first-child {
+  top: -0.25em;
+  padding-top: 0;
+}
+
+#nav a {
+  border: none;
+  display: inline-block;
+  width: 100%;
+  padding: 0.25em;
+  margin: 0.5em 0;
+  text-align: center;
+  text-decoration: none;
+}
+#nav>a {
+  border: 1px solid;
+  border-color: transparent;
+}
+
+#nav a span { display: none; }
+
+#nav a:hover span {
+  display: inline;
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  left: 0;
+  margin: 0.5em 0;
+  padding: 0.25em;
+  border: none;
+  font-size: medium;
+}
+#nav>a:hover>span {
+  border: 1px solid;
+  border-color: transparent;
+}
+
+.content#news { padding: 0.25em 0.25em 0.15em; }
+.content#news span { font: medium Georgia,serif; }
+.content#news h2, .content#news h3 {
+  display: inline;
+  margin: 0;
+  font: medium Verdana,sans-serif;
+}
+.content#news h2 a, .content#news h3 a {
+  text-decoration: none;
+}
+.content#news hr { display: none; }
+
+.nonspaced>li {
+  margin-top: 0em;
+  margin-bottom: 0em;
+}
+.morespace>li {
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
+.title { font-style: italic; }
+.smallnote { font-size: smaller; }
+
+.textright { text-align: right; }
+
+/* Indent "detail" paragraphs. */
+p.details { margin-left: 2em; }
+
+/* Hacks are bad, but .shortbar _crashes_ NS4 */
+/*/*/a{}
+hr.shortbar { width: 50%; }
+/* That apparently hides it from NS4, Mac/Win */
+
+
+/* Adapt to small screen sizes. */
+@media screen and (max-device-width: 670px),
+       screen and (max-width: 670px) {
+  body,html { margin: 0em; }
+  #nav {
+    position: absolute;
+    top: 0em;
+    left: 0em;
+    width: 100%;
+    text-align: center;
+    font-size: smaller;
+  }
+  body>#nav { position: absolute; }
+
+  #nav a {
+    width: 5.5em;
+    max-width: 30%;
+    padding: 0.1em;
+    margin: 0.15em 0;
+  }
+
+  #nav a.noshow {
+    display: inline;
+    margin: 0em;
+    padding: 0em;
+    border: none;
+  }
+  #nav a.noshow br { display: inline; }
+
+  #nav a span, #nav a:hover span { display: none; }
+
+  #title {
+    margin: 2.25em 0.5em 0.5em;
+    padding: 0.5em 1em 0.25em 1em;
+    text-align: center;
+    font-size: smaller;
+  }
+
+  .content {
+    margin: 0.5em 0.5em;
+    padding: 0.25em 0.5em;
+  }
+
+  .centernote {
+    padding: 0em 1em;
+    margin-top: 0.2em;
+  }
+}
+
