@@ -5,16 +5,16 @@
     <title>Interactive Two-Observer Spacetime Diagrams</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="Author" content="Steuard Jensen" />
-    <script type="module" crossorigin src="./assets/main-0nPqEc6k.js"></script>
-    <link rel="modulepreload" crossorigin href="./assets/System-BOI9hxz9.js">
-    <link rel="stylesheet" crossorigin href="./assets/System-CHx0tuS1.css">
+    <script type="module" crossorigin src="./assets/main-VmZ0IU3B.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/System-DDbNW3ZI.js">
+    <link rel="stylesheet" crossorigin href="./assets/System-MSM4pUXT.css">
   </head>
 
   <body>
     <header>
       <h1>Interactive Two-Observer Spacetime&nbsp;Diagrams</h1>
       <div class="notes">
-        <p>by Steuard Jensen, Alma College.</p>
+        <p>by Prof. Steuard Jensen, Alma College.</p>
         <p><a href="intro.html">What is this?</a></p> 
         <p><a href="#HowToUse">Instructions</a></p>
       </div>
@@ -75,6 +75,7 @@
             value="6.5" min="0" max="10" step="any">-->
         </div>
 
+        <div id="popupContainer">
         <div id="selectedEventControls" class="trajectoryEventControlBlock invisible">
           <label class="timeValue grid-tVal"><i>t</i> = 
             <input class="coordInput" type="number" step="any" id="selectedT"></label>
@@ -127,6 +128,11 @@
           </div>
           <div class="eventTitle">Selected event&nbsp;&nbsp;<output id="selectedName"></output></div>
         </div>
+        <div id="messageBox">
+          <p id="messageBoxText">Foo.
+          </p>
+        </div>
+        </div> <!-- div popupContainer -->
 
         <div class="controlStack">
           <label> 
@@ -134,10 +140,8 @@
             <input id="FrameBeta" class="vInput" type="number" value="0.5" 
                   min="-0.96" max="0.96" step="0.01" /></label>
 
-          <label class="timeValue">
-            Heartbeats: 
-            <input id="HeartbeatStepVal" class="coordInput"
-                  type="number" value="1" min="0" step="0.25" /></label>
+          <button id="TrajFrameButton"  aria-label="Change to selected trajectory frame"
+            value="TrajFrame">➔Trajectory Frame</button>
 
           <label> 
             Other Frame diagram
@@ -150,13 +154,17 @@
             <input id="timeUnitInput" value="s" list="timeUnitOptions" 
               class="symbolInput" /></label>
           <label class="timeValue">
-            <i>t</i><sub>min</sub>:
+            &nbsp;&nbsp;<i>t</i><sub>min</sub>:
             <input id="tMinInput" class="coordInput" type="number" step="any"
               value="-3" max="0" /></label>
           <label class="timeValue">
             <i>t</i><sub>max</sub>:
             <input id="tMaxInput" class="coordInput" type="number" step="any"
               value="14" min="0" /></label>
+          <label class="timeValue">
+            Heartbeats: 
+            <input id="HeartbeatStepVal" class="coordInput"
+                  type="number" value="1" min="0" step="0.25" /></label>
           <label class="timeValue">
             <i>t</i> step:
             <input id="tStepInput" class="coordInput" type="number" step="any"
@@ -175,47 +183,65 @@
               <option value='{"lone":[],"trajs":[],"tRange":{"minT":-3,"maxT":14,"step":1},"hstep":1,"beta":0.28}'>
                 Blank</option>
               <option id="PassingHouse"
-                value='{"lone":[],"trajs":[{"n":"🏠","ev":[[-2,0,"S"],[4,0,"A","S"]],"c":0,"hb":0},{"n":"🏃‍♀️‍➡️","ev":[[-2,-1,"S"],[10,5,"A","S"]],"c":2,"hb":0},{"n":"✈️","ev":[[-0.5,-2,"S"],[11,7,"A","S"]],"c":3,"hb":0}],"tRange":{"minT":-3,"maxT":12,"step":1,"minX":-4,"minXAuto":false},"hstep":1,"unit":"s","beta":0,"oHide":true}'>
+                value='{"lone":[],"trajs":[{"n":"🏠","ev":[[-2,0,"S"],[4,0,"A","S"]],"c":0,"hb":0},{"n":"🏃‍♀️‍➡️","ev":[[-2,-1,"S"],[10,5,"A","S"]],"c":2,"hb":0},{"n":"✈️","ev":[[-0.5,-2,"S"],[11,7,"A","S"]],"c":3,"hb":0}],"tRange":{"minT":-3,"maxT":12,"step":1,"minX":-4,"minXAuto":false},"hstep":1,"unit":"s","beta":0,"oHide":true,"description":"A jogger passes a house while a model airplane flies past them."}'>
                 Passing a house</option>
               <option id="MovingObjects"
-                value='{"lone":[],"trajs":[{"n":"🏠","t0":0,"ev":[[-3,-3,"S"],[7,-3,"A","S"]],"c":0},{"n":"🏃‍♀️‍➡️","t0":0,"ev":[[-3,-3,"S"],[11,0.92,"A","S"]],"c":2},{"n":"✈️","t0":0,"ev":[[-3,-3,"S"],[11,4,"A","S"]],"c":3},{"n":"🚀","t0":0,"ev":[[-3,-3,"S"],[7,5,"A","S"]],"c":4},{"n":"💡","t0":0,"ev":[[-3,-3,"S"],[5,5,"A","S"]],"c":0,"hb":0}],"tRange":{"minT":-3,"maxT":14,"step":1},"hstep":1,"beta":0.5}'>
+                value='{"lone":[],"trajs":[{"n":"🏠","t0":0,"ev":[[-3,-3,"S"],[7,-3,"A","S"]],"c":0},{"n":"🏃‍♀️‍➡️","t0":0,"ev":[[-3,-3,"S"],[11,0.92,"A","S"]],"c":2},{"n":"✈️","t0":0,"ev":[[-3,-3,"S"],[11,4,"A","S"]],"c":3},{"n":"🚀","t0":0,"ev":[[-3,-3,"S"],[7,5,"A","S"]],"c":4},{"n":"💡","t0":0,"ev":[[-3,-3,"S"],[5,5,"A","S"]],"c":0,"hb":0}],"tRange":{"minT":-3,"maxT":14,"step":1},"hstep":1,"beta":0.5,"description":"Multiple objects with different velocities begin at the same point and spread apart. The Home Frame is where the house is at rest, while the Other Frame corresponds to an observer on the airplane."}'>
                 Moving objects</option>
               <option
-                value='{"lone":[],"trajs":[{"n":"","t0":0,"ev":[[0,-3],[3,0]],"c":4,"hb":0},{"n":"","t0":0,"ev":[[2,-3],[8,3]],"c":4,"hb":0},{"n":"","t0":0,"ev":[[4,-3],[13,6]],"c":4,"hb":0},{"n":"🦏","t0":0,"ev":[[-2,-3,"S"],[5,1.2,"A","S"]],"c":3},{"n":"🏠","t0":0,"ev":[[-2,-3,"S"],[3,-3,"A","S"]],"c":0}],"tRange":{"minT":-4,"maxT":14,"step":1},"hstep":1,"beta":0.6}'>
+                value='{"lone":[],"trajs":[{"n":"","t0":0,"ev":[[0,-3],[3,0]],"c":4,"hb":0},{"n":"","t0":0,"ev":[[2,-3],[8,3]],"c":4,"hb":0},{"n":"","t0":0,"ev":[[4,-3],[13,6]],"c":4,"hb":0},{"n":"🦏","t0":0,"ev":[[-2,-3,"S"],[5,1.2,"A","S"]],"c":3},{"n":"🏠","t0":0,"ev":[[-2,-3,"S"],[3,-3,"A","S"]],"c":0}],"tRange":{"minT":-4,"maxT":14,"step":1},"hstep":1,"beta":0.6,"description":"A rhino charges past a house at 3/5 the speed of light. After that, every two seconds the house sends a flash of light toward the rhino. The important point is that on a spacetime diagram, light always travels at a 45° angle (in either reference frame)."}'>
                 Light signals</option>
-              <option
-                value='{"lone":[],"trajs":[{"n":"🧑‍🎤","t0":0,"ev":[[0,-0.25,"S"],[5,-0.25],[10,-0.25,"A","S"]],"c":2},{"n":"🧑‍🚀","t0":1,"ev":[[-4,0.25,"S"],[0,0.25],[5,4.25],[10,0.25],[15,0.25,"A","S"]],"c":1}],"tRange":{"minT":-3,"maxT":14,"step":1},"hstep":1,"beta":0.5,"oHide":true}'>
+              <option id="TwinParadoxOrig"
+                value='{"lone":[],"trajs":[{"n":"🧑‍🎤","t0":0,"ev":[[0,-0.25,"S"],[5,-0.25],[10,-0.25,"A","S"]],"c":2},{"n":"🧑‍🚀","t0":1,"ev":[[-4,0.25,"S"],[0,0.25,0],[5,4.25],[10,0.25,"A",0],[15,0.25,"A","S"]],"c":1}],"tRange":{"minT":-3,"maxT":14,"minX":-8,"step":1},"unit":"y","hstep":1,"beta":0.5,"oHide":true,"description":"A pair of twins begin together at rest, and then one travels to a distant planet 4 light years away and back at 4/5 the speed of light. When they get back, the twin who stayed home has aged ten years while the traveling twin has only aged by six."}'>
                 Twin "paradox"</option>
+              <!-- <option id="TwinParadox"
+                value='{"lone":[],"trajs":[{"n":"🧑‍🎤","t0":0,"ev":[[0,-0.25,"S"],[5,-0.25],[10,-0.25,"A","S"]],"c":2},{"n":"🧑‍🚀","t0":1,"ev":[[-4,0.25,"S"],[0,0.25,0],[6,4.25],[12,0.25,"A",0],[16,0.25,"A","S"]],"c":1}],"tRange":{"minT":-2,"maxT":15,"minX":-5,"step":1},"hstep":1,"beta":0.5,"oHide":true}'>
+                Twin "paradox"</option> -->
+              <!-- <option id="TwinParadox06"
+                value='{"lone":[],"trajs":[{"n":"🧑‍🎤","t0":0,"ev":[[0,-0.25,"S"],[6,-0.25],[12,-0.25,"A","S"]],"c":2},{"n":"🧑‍🚀","t0":1,"ev":[[-4,0.25,"S"],[-0.05,0.25,0],[5.95,4.25],[11.95,0.25,"A",0],[16,0.25,"A","S"]],"c":1}],"tRange":{"minT":-2,"maxT":15,"minX":-7,"step":1},"hstep":1,"beta":0.666666667,"oHide":true}'>
+                Twin "paradox"</option> -->
               <option
-                value='{"lone":[[2,-4,"💥",0],[4,4,"💥",4]],"trajs":[{"n":"🧨","t0":0,"ev":[[-3,-4,"S"],[2,-4]],"c":0},{"n":"🧨","t0":0,"ev":[[-3,4,"S"],[4,4]],"c":4}],"tRange":{"minT":-3,"maxT":10,"step":1},"hstep":1,"beta":0.5,"hbd":0}'>
+                value='{"lone":[[2,-4,"💥",0],[4,4,"💥",4]],"trajs":[{"n":"🧨","t0":0,"ev":[[-3,-4,"S"],[2,-4]],"c":0},{"n":"🧨","t0":0,"ev":[[-3,4,"S"],[4,4]],"c":4}],"tRange":{"minT":-3,"maxT":14,"step":1},"hstep":1,"beta":0.5,"hbd":0,"description":"Two firecrackers sit at rest in the Home Frame. The one on the left explodes first and the other explodes two seconds later. But in a moving frame, the one on the right explodes more than two seconds before the one on the left. The tilted time slices in the first diagram illustrate this: the left explosion is on a later slice."}'>
                 Order of events</option>
               <option
-                value='{"lone":[[3,-3,"💥",0],[3,3,"💥",4],[0,0,"🌟",1]],"trajs":[{"n":"🧨","t0":1,"ev":[[-5,-3,"S"],[3,-3]],"c":0},{"n":"🧨","t0":1,"ev":[[-5,3,"S"],[3,3]],"c":4},{"n":"","ev":[[0,0],[3,-3]],"c":1},{"n":"","ev":[[0,0],[3,3]],"c":1},{"n":"🧑‍🎤","t0":1,"ev":[[-5,0,"S"],[3,0,"A","S"]],"c":2}],"tRange":{"minT":-3,"maxT":10,"step":1,"minX":-4,"minXAuto":false},"hstep":1,"beta":-0.5,"hbd":0}'>
+                value='{"lone":[[3,-3,"💥",0],[3,3,"💥",4],[0,0,"🌟",1]],"trajs":[{"n":"🧨","t0":1,"ev":[[-5,-3,"S"],[3,-3]],"c":0},{"n":"🧨","t0":1,"ev":[[-5,3,"S"],[3,3]],"c":4},{"n":"","ev":[[0,0],[3,-3]],"c":1},{"n":"","ev":[[0,0],[3,3]],"c":1},{"n":"🧑‍🎤","t0":1,"ev":[[-5,0,"S"],[3,0,"A","S"]],"c":2}],"tRange":{"minT":-3,"maxT":10,"step":1,"minX":-4,"minXAuto":false},"hstep":1,"beta":-0.5,"hbd":0,"description":"A careful experiment with simultaneous events. The firecrackers are equally distant from the center observer, who sends a flash of light both ways to ignite them. This guarantees they&apos;re simultaneous in the Home Frame, but in the Other Frame the one in back explodes first (because light paths are always 45°, in either frame)."}'>
                 Laser ignition</option>
               <option
-                value='{"lone":[],"trajs":[{"n":"🏃‍♀️‍➡️","ev":[[-4,-5,"S"],[4.3333,1.6667,"A","S"]],"c":2,"hb":0},{"n":"━","ev":[[-6.6667,-8.3333,"S"],[1.6667,-1.6667,"A","S"]],"c":3,"hb":0},{"n":"━","ev":[[-1.3333,-1.6667,"S"],[7,5,"A","S"]],"c":3,"hb":0},{"n":"━","ev":[[-2,-2.5,"S"],[6.3333,4.1667,"A","S"]],"c":3,"hb":0},{"n":"━","ev":[[-2.6667,-3.3333,"S"],[5.6667,3.3333,"A","S"]],"c":3,"hb":0},{"n":"━","ev":[[-3.3333,-4.1667,"S"],[5,2.5,"A","S"]],"c":3,"hb":0},{"n":"━","ev":[[-4.6667,-5.8333,"S"],[3.6667,0.8333,"A","S"]],"c":3,"hb":0},{"n":"━","ev":[[-5.3333,-6.6667,"S"],[3,0,"A","S"]],"c":3,"hb":0},{"n":"━","ev":[[-6,-7.5,"S"],[2.3333,-0.8333,"A","S"]],"c":3,"hb":0},{"n":"╠","ev":[[0,1.5,"S"],[5,1.5,"A","S"]],"c":4,"hb":0},{"n":"╣","ev":[[0,5,"S"],[5,5,"A","S"]],"c":4,"hb":0},{"n":"╬","ev":[[0,2,"S"],[5,2,"A","S"]],"c":4,"hb":0},{"n":"╬","ev":[[0,2.5,"S"],[5,2.5,"A","S"]],"c":4,"hb":0},{"n":"╬","ev":[[0,3,"S"],[5,3,"A","S"]],"c":4,"hb":0},{"n":"╬","ev":[[0,3.5,"S"],[5,3.5,"A","S"]],"c":4,"hb":0},{"n":"╬","ev":[[0,4,"S"],[5,4,"A","S"]],"c":4,"hb":0},{"n":"╬","ev":[[0,4.5,"S"],[5,4.5,"A","S"]],"c":4,"hb":0}],"tRange":{"minT":-3,"maxT":14,"step":1},"hstep":1,"beta":0.8}'>
+                value='{"lone":[],"trajs":[{"n":"🏃‍♀️‍➡️","ev":[[-4,-5,"S"],[4.3333,1.6667,"A","S"]],"c":2,"hb":0},{"n":"━","ev":[[-6.6667,-8.3333,"S"],[1.6667,-1.6667,"A","S"]],"c":3,"hb":0},{"n":"━","ev":[[-1.3333,-1.6667,"S"],[7,5,"A","S"]],"c":3,"hb":0},{"n":"━","ev":[[-2,-2.5,"S"],[6.3333,4.1667,"A","S"]],"c":3,"hb":0},{"n":"━","ev":[[-2.6667,-3.3333,"S"],[5.6667,3.3333,"A","S"]],"c":3,"hb":0},{"n":"━","ev":[[-3.3333,-4.1667,"S"],[5,2.5,"A","S"]],"c":3,"hb":0},{"n":"━","ev":[[-4.6667,-5.8333,"S"],[3.6667,0.8333,"A","S"]],"c":3,"hb":0},{"n":"━","ev":[[-5.3333,-6.6667,"S"],[3,0,"A","S"]],"c":3,"hb":0},{"n":"━","ev":[[-6,-7.5,"S"],[2.3333,-0.8333,"A","S"]],"c":3,"hb":0},{"n":"╠","ev":[[0,1.5,"S"],[5,1.5,"A","S"]],"c":4,"hb":0},{"n":"╣","ev":[[0,5,"S"],[5,5,"A","S"]],"c":4,"hb":0},{"n":"╬","ev":[[0,2,"S"],[5,2,"A","S"]],"c":4,"hb":0},{"n":"╬","ev":[[0,2.5,"S"],[5,2.5,"A","S"]],"c":4,"hb":0},{"n":"╬","ev":[[0,3,"S"],[5,3,"A","S"]],"c":4,"hb":0},{"n":"╬","ev":[[0,3.5,"S"],[5,3.5,"A","S"]],"c":4,"hb":0},{"n":"╬","ev":[[0,4,"S"],[5,4,"A","S"]],"c":4,"hb":0},{"n":"╬","ev":[[0,4.5,"S"],[5,4.5,"A","S"]],"c":4,"hb":0}],"tRange":{"minT":-3,"maxT":14,"step":1},"hstep":1,"beta":0.8,"description":"A runner carries a pole of rest length 4ns at speed 4/5c toward the side door of a barn of rest length 3.5ns. Will it fit? An object&apos;s length must be measured all at once: along a single time slice. Along a horizontal Home time slice, the pole&apos;s time slices don&apos;t spread as much as the barn&apos;s: it fits. But along a tilted Other time slice, the barn is smaller."}'>
                 Pole & barn</option>
               <option
-                value='{"lone":[[6.25,1.5,"🚪",0],[6.25,5,"🚪",0]],"trajs":[{"n":"🏃‍♀️‍➡️","ev":[[-4,-5,"S"],[4.3333,1.6667,"A","S"]],"c":2,"hb":0},{"n":"━","ev":[[-6.6667,-8.3333,"S"],[1.6667,-1.6667,"A","S"]],"c":3,"hb":0},{"n":"━","ev":[[-1.3333,-1.6667,"S"],[7,5,"A","S"]],"c":3,"hb":0},{"n":"━","ev":[[-2,-2.5,"S"],[6.3333,4.1667,"A","S"]],"c":3,"hb":0},{"n":"━","ev":[[-2.6667,-3.3333,"S"],[5.6667,3.3333,"A","S"]],"c":3,"hb":0},{"n":"━","ev":[[-3.3333,-4.1667,"S"],[5,2.5,"A","S"]],"c":3,"hb":0},{"n":"━","ev":[[-4.6667,-5.8333,"S"],[3.6667,0.8333,"A","S"]],"c":3,"hb":0},{"n":"━","ev":[[-5.3333,-6.6667,"S"],[3,0,"A","S"]],"c":3,"hb":0},{"n":"━","ev":[[-6,-7.5,"S"],[2.3333,-0.8333,"A","S"]],"c":3,"hb":0},{"n":"╠","ev":[[0,1.5,"S"],[5,1.5,"A","S"]],"c":4,"hb":0},{"n":"╣","ev":[[0,5,"S"],[5,5,"A","S"]],"c":4,"hb":0},{"n":"╬","ev":[[0,2,"S"],[5,2,"A","S"]],"c":4,"hb":0},{"n":"╬","ev":[[0,2.5,"S"],[5,2.5,"A","S"]],"c":4,"hb":0},{"n":"╬","ev":[[0,3,"S"],[5,3,"A","S"]],"c":4,"hb":0},{"n":"╬","ev":[[0,3.5,"S"],[5,3.5,"A","S"]],"c":4,"hb":0},{"n":"╬","ev":[[0,4,"S"],[5,4,"A","S"]],"c":4,"hb":0},{"n":"╬","ev":[[0,4.5,"S"],[5,4.5,"A","S"]],"c":4,"hb":0}],"tRange":{"minT":-3,"maxT":14,"step":1},"hstep":1,"beta":0.8}'>
+                value='{"lone":[[6.25,1.5,"🚪",0],[6.25,5,"🚪",0]],"trajs":[{"n":"🏃‍♀️‍➡️","ev":[[-4,-5,"S"],[4.3333,1.6667,"A","S"]],"c":2,"hb":0},{"n":"━","ev":[[-6.6667,-8.3333,"S"],[1.6667,-1.6667,"A","S"]],"c":3,"hb":0},{"n":"━","ev":[[-1.3333,-1.6667,"S"],[7,5,"A","S"]],"c":3,"hb":0},{"n":"━","ev":[[-2,-2.5,"S"],[6.3333,4.1667,"A","S"]],"c":3,"hb":0},{"n":"━","ev":[[-2.6667,-3.3333,"S"],[5.6667,3.3333,"A","S"]],"c":3,"hb":0},{"n":"━","ev":[[-3.3333,-4.1667,"S"],[5,2.5,"A","S"]],"c":3,"hb":0},{"n":"━","ev":[[-4.6667,-5.8333,"S"],[3.6667,0.8333,"A","S"]],"c":3,"hb":0},{"n":"━","ev":[[-5.3333,-6.6667,"S"],[3,0,"A","S"]],"c":3,"hb":0},{"n":"━","ev":[[-6,-7.5,"S"],[2.3333,-0.8333,"A","S"]],"c":3,"hb":0},{"n":"╠","ev":[[0,1.5,"S"],[5,1.5,"A","S"]],"c":4,"hb":0},{"n":"╣","ev":[[0,5,"S"],[5,5,"A","S"]],"c":4,"hb":0},{"n":"╬","ev":[[0,2,"S"],[5,2,"A","S"]],"c":4,"hb":0},{"n":"╬","ev":[[0,2.5,"S"],[5,2.5,"A","S"]],"c":4,"hb":0},{"n":"╬","ev":[[0,3,"S"],[5,3,"A","S"]],"c":4,"hb":0},{"n":"╬","ev":[[0,3.5,"S"],[5,3.5,"A","S"]],"c":4,"hb":0},{"n":"╬","ev":[[0,4,"S"],[5,4,"A","S"]],"c":4,"hb":0},{"n":"╬","ev":[[0,4.5,"S"],[5,4.5,"A","S"]],"c":4,"hb":0}],"tRange":{"minT":-3,"maxT":14,"step":1},"hstep":1,"beta":0.8,"description":"But if the barn doors slam shut with the pole inside, doesn&apos;t that prove it definitely fits? Well, remember that doors shutting simultaneously in one frame may not be simultaneous in the other! The right door closes along an earlier tilted Other time slice than the left door does, so in the Other Frame the left closes after the pole&apos;s end is inside."}'>
                 Pole & barn: doors</option>
               <option
-                value='{"lone":[[7,5,"💥",0],[8.3333,3.6667,"💥",0],[7.6667,4.3333,"💥",0]],"trajs":[{"n":"🏃‍♀️‍➡️","ev":[[-4,-5,"S"],[7.6668,4.3335]],"c":2},{"n":"━","ev":[[-6.6667,-8.3333,"S"],[8.3332,3.6665]],"c":3},{"n":"━","ev":[[-1.3333,-1.6667,"S"],[7,5]],"c":3},{"n":"━","ev":[[-2,-2.5,"S"],[7.1668,4.8335]],"c":3},{"n":"━","ev":[[-2.6667,-3.3333,"S"],[7.3332,4.6665]],"c":3},{"n":"━","ev":[[-3.3333,-4.1667,"S"],[7.5,4.5]],"c":3},{"n":"━","ev":[[-4.6667,-5.8333,"S"],[7.8332,4.1665]],"c":3},{"n":"━","ev":[[-5.3333,-6.6667,"S"],[8,4]],"c":3},{"n":"━","ev":[[-6,-7.5,"S"],[8.1668,3.8335]],"c":3},{"n":"╠","ev":[[0,1.5,"S"],[5,1.5,"A","S"]],"c":4},{"n":"╣","ev":[[0,5,"S"],[5,5,"A","S"]],"c":4},{"n":"╬","ev":[[0,2,"S"],[5,2,"A","S"]],"c":4},{"n":"╬","ev":[[0,2.5,"S"],[5,2.5,"A","S"]],"c":4},{"n":"╬","ev":[[0,3,"S"],[5,3,"A","S"]],"c":4},{"n":"╬","ev":[[0,3.5,"S"],[5,3.5,"A","S"]],"c":4},{"n":"╬","ev":[[0,4,"S"],[5,4,"A","S"]],"c":4},{"n":"╬","ev":[[0,4.5,"S"],[5,4.5,"A","S"]],"c":4},{"n":"💥","ev":[[7,5],[9,3,"A","S"]],"c":0},{"n":"💥","ev":[[7,5],[9,4,"A","S"]],"c":0},{"n":"💥","ev":[[7,5],[9,5,"A","S"]],"c":0},{"n":"💥","ev":[[7,5],[9,6,"A","S"]],"c":0},{"n":"💥","ev":[[7,5],[12,9,"A","S"]],"c":0},{"n":"💥","ev":[[7,5],[9,7,"A","S"]],"c":0}],"tRange":{"minT":-3,"maxT":14,"step":1},"hstep":1,"beta":0.8,"hbd":0}'>
+                value='{"lone":[[7,5,"💥",0],[8.3333,3.6667,"💥",0],[7.6667,4.3333,"💥",0]],"trajs":[{"n":"🏃‍♀️‍➡️","ev":[[-4,-5,"S"],[7.6668,4.3335]],"c":2},{"n":"━","ev":[[-6.6667,-8.3333,"S"],[8.3332,3.6665]],"c":3},{"n":"━","ev":[[-1.3333,-1.6667,"S"],[7,5]],"c":3},{"n":"━","ev":[[-2,-2.5,"S"],[7.1668,4.8335]],"c":3},{"n":"━","ev":[[-2.6667,-3.3333,"S"],[7.3332,4.6665]],"c":3},{"n":"━","ev":[[-3.3333,-4.1667,"S"],[7.5,4.5]],"c":3},{"n":"━","ev":[[-4.6667,-5.8333,"S"],[7.8332,4.1665]],"c":3},{"n":"━","ev":[[-5.3333,-6.6667,"S"],[8,4]],"c":3},{"n":"━","ev":[[-6,-7.5,"S"],[8.1668,3.8335]],"c":3},{"n":"╠","ev":[[0,1.5,"S"],[5,1.5,"A","S"]],"c":4},{"n":"╣","ev":[[0,5,"S"],[5,5,"A","S"]],"c":4},{"n":"╬","ev":[[0,2,"S"],[5,2,"A","S"]],"c":4},{"n":"╬","ev":[[0,2.5,"S"],[5,2.5,"A","S"]],"c":4},{"n":"╬","ev":[[0,3,"S"],[5,3,"A","S"]],"c":4},{"n":"╬","ev":[[0,3.5,"S"],[5,3.5,"A","S"]],"c":4},{"n":"╬","ev":[[0,4,"S"],[5,4,"A","S"]],"c":4},{"n":"╬","ev":[[0,4.5,"S"],[5,4.5,"A","S"]],"c":4},{"n":"💥","ev":[[7,5],[9,3,"A","S"]],"c":0},{"n":"💥","ev":[[7,5],[9,4,"A","S"]],"c":0},{"n":"💥","ev":[[7,5],[9,5,"A","S"]],"c":0},{"n":"💥","ev":[[7,5],[9,6,"A","S"]],"c":0},{"n":"💥","ev":[[7,5],[12,9,"A","S"]],"c":0},{"n":"💥","ev":[[7,5],[9,7,"A","S"]],"c":0}],"tRange":{"minT":-3,"maxT":14,"step":1},"hstep":1,"beta":0.8,"hbd":0,"description":"But with the right door shut, the pole will stop and be trapped inside! Sure, but the shock of the collision that stops the pole can&apos;t move up the pole faster than light. (And a collision this close to c would be explosive!!) Following the 45° lines, the pole&apos;s left end doesn&apos;t know to stop until it&apos;s well inside the barn."}'>
                 Pole & barn: resolved</option>
               <option
-                value='{"lone":[],"trajs":[{"n":"🚀","t0":1,"ev":[[-3,2,"S"],[0,1,"S",0],[3,2,"A","S"]],"c":4},{"n":"⭐️","ev":[[0,0,"S"],[7,0,"A","S"]],"c":0}],"tRange":{"minT":-5,"maxT":12,"step":1},"hstep":1,"beta":0.6}'>
+                value='{"lone":[],"trajs":[{"n":"🚀","t0":1,"ev":[[-3,2,"S"],[0,1,"S",0],[3,2,"A","S"]],"c":4},{"n":"⭐️","ev":[[0,0,"S"],[7,0,"A","S"]],"c":0}],"tRange":{"minT":-7,"maxT":10,"step":1},"hstep":1,"beta":0.6,"description":"Acceleration corresponds to a curving worldline in the diagram; constant acceleration corresponds to a hyperbola (in any inertial frame). The shape is the same in both frames, but the time of closest approach to the origin differs."}'>
                 Accelerated motion</option>
               <option
-                value='{"lone":[],"trajs":[{"n":"","t0":1,"ev":[[-3,2,"A",0],[0,0],[3,2,0,"S"],[6,0],[9,2,0,"S"],[12,0],[15,2,0]],"c":0}],"tRange":{"minT":-3,"maxT":15,"step":1},"hstep":1,"beta":0.28}'>
-                Bounce</option>
+                value='{"lone":[],"trajs":[{"n":"🚀","t0":1,"ev":[[-3,2,"S"],[0,1,"S",0],[3,2,"A","S"]],"c":4},{"n":"⭐️","ev":[[0,0,"S"],[7,0,"A","S"]],"c":0}],"tRange":{"minT":-7,"maxT":10,"step":1},"hstep":1,"beta":"t0","description":"One less-bad way to define accelerated frame coordinates is to draw a time slice through each trajectory point matching that point&apos;s velocity. (&OpenCurlyDoubleQuote;Rindler coordinates,&CloseCurlyDoubleQuote; roughly.) The bottom of the wedge is t=&minus;&infin;, the top is +&infin;, with constant-x curves as nested hyperbolas. Events outside the wedge (included the shaded reverse region) have no coordinates."}'>
+                Accelerated frame</option>
               <option
-                value='{"lone":[],"trajs":[{"n":"🧑‍🎤","ev":[[0,-0.25,"S"],[5,-0.25],[10,-0.25,"A","S"]],"c":2},{"n":"🧑‍🚀","t0":1,"ev":[[-4,0.25,"S"],[0,0.25,"A","S"],[0.5,0.5],[5.5,4.5,"A","S"],[6.5,4.5],[11.5,0.5],[12,0.25,"S"],[15,0.25,"A","S"]],"c":1},{"n":"⭐️","ev":[[0,5,"S"],[8,5],[14,5,"A","S"]],"c":0}],"tRange":{"minT":-2,"maxT":16,"step":1,"minX":-8,"minXAuto":false},"hstep":1,"beta":0.5,"oHide":true}'>
+                value='{"lone":[],"trajs":[{"n":"","t0":1,"ev":[[-3,2,"A",0],[0,0],[3,2,0,"S"],[6,0],[9,2,0,"S"],[12,0],[15,2,0]],"c":0}],"tRange":{"minT":-3,"maxT":15,"step":1},"hstep":1,"beta":0.28,"description":"Just a fun bouncing ball, with constant acceleration to the left and hard elastic bounces at x=0."}'>
+                Bounce</option>
+              <!-- <option id="SmoothTwins"
+                value='{"lone":[],"trajs":[{"n":"🧑‍🎤","ev":[[0,-0.25,"S"],[5,-0.25],[10,-0.25,"A","S"]],"c":2},{"n":"🧑‍🚀","t0":1,"ev":[[-4,0.25,"S"],[0,0.25,"A","S"],[0.5,0.5],[5.5,4.5,"A","S"],[6.5,4.5],[11.5,0.5],[12,0.25,"S"],[15,0.25,"A","S"]],"c":1},{"n":"⭐️","ev":[[0,5,"S"],[8,5],[14,5,"A","S"]],"c":0}],"tRange":{"minT":-2,"maxT":16,"step":1,"minX":-7,"minXAuto":false},"hstep":1,"beta":0.5,"oHide":true}'>
+                Smooth twins</option> -->
+              <option id="SimpleSmoothTwins"
+                value='{"lone":[],"trajs":[{"n":"🧑‍🎤","t0":0,"ev":[[0,-0.5,"S"],[6,-0.5],[12,-0.5,"A","S"]],"c":2},{"n":"🧑‍🚀","t0":1,"ev":[[-4,0,"S"],[-0.05,0,0,"S"],[5.95,4,"S","S"],[11.95,0,"S",0],[16,0,"A","S"]],"c":1}],"tRange":{"minT":-2,"maxT":15,"minX":-4.5,"step":1},"unit":"y","hstep":1,"beta":"t1","description":"A smoothed version of the twin paradox to illustrate the traveling twin&apos;s point of view. (Dashed lines = 1/4 time steps.) As the traveler reverses toward home, their time slices sweep a big angle and they think the twin at home is aging rapidly."}'>
                 Smooth twins</option>
               <option
-                value='{"lone":[],"trajs":[{"n":"🚀","t0":1,"ev":[[-3,-4,"S"],[1,-4],[3,4],[6,4,"A","S"]],"c":0}],"tRange":{"minT":-3,"maxT":14,"step":1,"minX":-7},"hstep":0.5,"beta":0.6}'>
-                FTL in Other Frame</option>
+                value='{"lone":[],"trajs":[{"n":"🚀","t0":0,"ev":[[-0,-4,"S"],[1,-4],[3,4],[6,4,"A","S"]],"c":0}],"tRange":{"minT":-3,"maxT":14,"step":1,"minX":-7},"unit":"min","hstep":0.5,"beta":0.6,"description":"Say a warp drive instantly takes you from rest to 4&times; light speed, then stops and leaves you at rest again. (Assume you age one minute during FTL: &OpenCurlyDoubleQuote;the TARDIS is running.&CloseCurlyDoubleQuote;) To an observer in an Other Frame, two copies of you appear out of nowhere, before you left! One&apos;s aging backward: it travels to original you, then both disappear!"}'>
+                Faster Than Light</option>
+              <!-- <option
+                value='{"lone":[],"trajs":[{"n":"","t0":1,"ev":[[-3,-4,"S"],[1,-4],[2,4,"A",0],[3,4.3333],[3.9375,4.8958],[-0.8125,-4.3542,"A",0.6],[0.1875,-4.0208],[10,-4.0208,"A","S"]],"c":0}],"tRange":{"minT":-3,"maxT":14,"step":1,"minX":-7,"minXAuto":false},"oHide":false,"hstep":0.5,"unit":"s","beta":0.6,"description":"If you have a warp drive as previously described, you can meet your past self! Start at rest, warp right at 8c, then use normal engines to accelerate to +3/5c. You&apos;re at rest in your new Other Frame: warp back left, ending at rest in the Other Frame, and accelerate left to -3/5c: rest in the Home Frame. &OpenCurlyDoubleQuote;Look, it&apos;s me!&CloseCurlyDoubleQuote;"}'>
+                FTL = time travel</option> -->
               <option
-                value='{"lone":[],"trajs":[{"n":"🚀","t0":1,"ev":[[-3,-4,"S"],[1,-4],[2,4,"A",0],[3,4.3333],[3.9375,4.8958],[-0.8125,-4.3542],[10,-4.3542,"A","S"]],"c":0}],"tRange":{"minT":-3,"maxT":14,"step":1},"hstep":0.5,"beta":0.6}'>
+                value='{"lone":[],"trajs":[{"n":"🚀","t0":1,"ev":[[-3,-4,"S"],[1,-4],[2,4,"A",0],[3,4.3333],[-1.7498,-4.9166,"A",0.6],[-0.75,-4.5833],[10,-4.5833,"A","S"]],"c":0}],"tRange":{"minT":-3,"maxT":14,"step":1,"minX":-7,"minXAuto":false},"oHide":false,"hstep":0.5,"unit":"min","beta":0.6,"description":"If you have a warp drive as previously described, you can meet your past self! Start at rest, warp right at 8c, then use normal engines to accelerate to +3/5c. You&apos;re at rest in your new Other Frame: warp back left, ending at rest in the Other Frame, and accelerate left to -3/5c: rest in the Home Frame. &OpenCurlyDoubleQuote;Look, it&apos;s me!&CloseCurlyDoubleQuote;"}'>
                 FTL = time travel</option>
+              <!-- <option
+                value='{"lone":[],"trajs":[{"n":"","t0":1,"ev":[[-3,-4,"S"],[1,-4],[2,4,"A",0],[3,4.3333],[3.9375,4.8958],[-0.8125,-4.3542,"A",0.6],[0.1875,-4.0208],[10,-4.0208,"A","S"]],"c":0}],"tRange":{"minT":-3,"maxT":14,"step":1,"minX":-7,"minXAuto":false},"oHide":false,"hstep":0.5,"unit":"s","beta":"t0"}'>
+                sFTL = time travel</option> -->
               <!--<option
                 value='{"lone":[[-0.5,-3.5,"A",0],[0.5,3.5,"B",3]],"trajs":[{"n":"🧑‍🚀","t0":0,"ev":[[-3,0.75],[-1,0.75,"A","S"],[0,1,"S"],[5,5,"A","S"],[6,5,"S"],[11,1,"A","S"],[12,0.75,"S"],[14,0.75]],"c":1},{"n":"🧑‍🎤","t0":0,"ev":[[-3,0.5],[0,0.5],[6,0.5],[11,0.5],[14,0.5]],"c":2},{"n":"⭐️","t0":0,"ev":[[-3,5.5],[0,5.5],[4,5.5],[11,5.5],[14,5.5],[17,5.5]],"c":0},{"n":"","t0":0,"ev":[[2.5,3],[5,0.5]],"c":3}],"tRange":{"minT":-3,"maxT":14,"step":1},"hstep":1,"beta":0.5}'>
                 Lots going on</option>-->
@@ -271,6 +297,7 @@
             no axes for an Other Frame are shown (because its <i>v</i>
             is 0), and the Other Frame diagram is hidden (the checkbox
             is unchecked). Try loading some of the pre-defined examples!
+            Each loads with a brief explanatory note.
           </li>
 
           <li>When you press the "Animate Motion" button under the
@@ -307,13 +334,39 @@
             its physical impossibility. Because no massive object could 
             follow such a path, any such step is treated as lasting one
             graph unit of proper time (think of it as the time it takes
-            for the TARDIS to rematerialize somewhere else).
+            for the TARDIS to rematerialize somewhere else). And if a
+            path somehow goes back in time, the animation shows the
+            object in inverted color (in fact, there's an argument to be
+            made that it would look like antimatter).
           </li>
 
           <li>You can label an event or trajectory with any symbol you'd
             like (I recommend just a single character). If you leave it
             blank, the label will be a simple circle (Clicking in the
             empty field (twice?) will pop up a list of suggested emoji.)
+          </li>
+
+          <li>There is partial support for visualizing non-inertial
+            reference frames. No Other Frame diagram is shown (for now), but you
+            can select a trajectory event and click the "➔Trajectory Frame"
+            button, and a plausible set of coordinate grid lines as seen by
+            that observer will be shown: constant time in red-orange,
+            constant position in grey. (If you click empty space to
+            remove your selected point, you can push the button again to
+            go back to an inertial frame. Or just set a velocity.)
+            If the angles of time gridlines change too quickly during
+            acceleration, dashed lines will appear to show quarter steps
+            (or dotted lines for very sharp accelerations, just to
+            illustrate the shape). Shaded regions indicate where these
+            coordinates are not well-defined: globally consistent
+            coordinates aren't generally possible in a non-inertial frame.
+            <em>(This coordinate frame is constructed by finding the
+            trajectory observer's instantaneous velocity and then
+            drawing a time slice through that event at the corresponding
+            angle. For experts, this is basically patching together
+            Rindler coordinates and Minkowski coordinates to match each
+            segment of the observer's motion: constant velocity or
+            constant proper acceleration.)</em>
           </li>
         </ul>
 
